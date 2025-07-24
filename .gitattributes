@@ -1,0 +1,23 @@
+# Set default line ending to LF (Unix-style) for all text files
+* text=auto
+
+# Explicitly enforce LF for known text file types
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.xml text eol=lf
+*.properties text eol=lf
+*.java text eol=lf
+*.yml text eol=lf
+
+# Treat certain files as binary to prevent any conversion (e.g., compiled assets, zip files)
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
+
+# Special case: Windows batch files should use CRLF if they need to be executable on Windows
+# (Though mvnw.cmd is usually handled correctly by tools, if you had other .cmd scripts)
+# mvnw.cmd text eol=crlf
