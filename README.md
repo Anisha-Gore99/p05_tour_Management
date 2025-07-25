@@ -1,0 +1,1 @@
+Tour Management System is a web-based platform that connects admin, tour agencies, and tourists to streamline tour planning, booking, and management. Tourists can browse and book packages, agencies can create and manage tours, and admin oversee quality and verification ensuring a smooth, secure, and engaging travel experience.
