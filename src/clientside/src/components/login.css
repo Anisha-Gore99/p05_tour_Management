@@ -1,0 +1,94 @@
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #B18EA9;
+  font-size: 28px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container input {
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+.login-container input:focus {
+  outline: none;
+  border: 1px solid #B18EA9;
+  box-shadow: 0 0 5px rgba(216, 112, 147, 0.3);
+}
+
+.login-container button {
+  padding: 12px;
+  background-color: #B18EA9;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.login-container button:hover {
+  background-color: #B18EA9;
+}
+
+.login-container p {
+  text-align: center;
+  color: #508B8B;
+  font-weight: 500;
+  margin-top: 10px;
+}
+@media (max-width: 480px) {
+  .login-container {
+    margin: 40px 20px;
+    padding: 20px;
+  }
+}
+/* Space buttons */
+.login-container form button {
+  padding: 10px 20px;
+  margin: 10px 5px 0 5px;  /* Add spacing between buttons */
+  background-color: #B18EA9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.login-container form button:hover {
+  background-color: #B18EA9;
+}
+
+/* Optional: Make them appear side-by-side with space */
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-container .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
