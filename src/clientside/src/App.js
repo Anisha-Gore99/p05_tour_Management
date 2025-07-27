@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Login from './components/login';
 import AdminHome from './components/AdminHome';
+import TourAgencyReg from './components/TourAgencyReg';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function Home() {
@@ -33,6 +34,21 @@ function Home() {
 }
 
 function App() {
+   const handleRegister = async info => {
+    console.log('Registering agency:', info);
+    try {
+      const res = await fetch('/api/touragencyreg', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(info)
+      });
+      if (!res.ok) throw new Error(res.statusText);
+      alert('Tour agency registered successfully.');
+    } catch (err) {
+      console.error(err);
+      alert('Registration failed.');
+    }
+  };
   return (
    <Router>
       <div className="App">
@@ -42,12 +58,14 @@ function App() {
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
           <Link to="/packages">Tour Packages</Link>
+          <Link to="/touragencyreg">Tour Agency Registration</Link>
         </nav>
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/adminhome" element={<AdminHome />} />
+          <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} />
           {/* Add other routes here like <Route path="/register" element={<Register />} /> */}
         </Routes>
 
@@ -59,5 +77,36 @@ function App() {
   
   );
 }
+
+// function App() {
+  // const handleRegister = async info => {
+  //   console.log('Registering agency:', info);
+  //   try {
+  //     const res = await fetch('/api/touragencyreg', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(info)
+  //     });
+  //     if (!res.ok) throw new Error(res.statusText);
+  //     alert('Tour agency registered successfully.');
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert('Registration failed.');
+  //   }
+  // };
+
+//   return (
+//     <Router>
+//       {/* header/nav */}
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} />
+//         <Route path="/adminhome" element={<AdminHome />} />
+//       </Routes>
+//       {/* footer */}
+//     </Router>
+//   );
+// }
 
 export default App;
