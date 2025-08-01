@@ -3,6 +3,8 @@ import './App.css';
 import Login from './components/login';
 import AdminHome from './components/AdminHome';
 import TourAgencyReg from './components/TourAgencyReg';
+import RegisterForm from './components/RegisterForm';   
+import TouristReg from './components/TouristReg';                                                                                                 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function Home() {
@@ -48,6 +50,22 @@ function App() {
       console.error(err);
       alert('Registration failed.');
     }
+ 
+};
+ const handleTouristRegister = async info => {
+  console.log('Registering tourist:', info);
+  try {
+    const res = await fetch('/api/touristreg', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(info)
+    });
+    if (!res.ok) throw new Error(res.statusText);
+    alert('Tourist registered successfully.');
+  } catch (err) {
+    console.error(err);
+    alert('Tourist registration failed.');
+  }
   };
   return (
    <Router>
@@ -58,14 +76,17 @@ function App() {
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
           <Link to="/packages">Tour Packages</Link>
-          <Link to="/touragencyreg">Tour Agency Registration</Link>
+          {/* <Link to="/touragencyreg">Tour Agency Registration</Link> */}
+        {/* <Link to="/touristreg">Tourist Register</Link> */}
         </nav>
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/adminhome" element={<AdminHome />} />
-          <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} />
+          <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister} />} />
+          <Route path="/touristreg" element={<TouristReg onSubmit={handleTouristRegister} />} />
+          {/* <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} /> */}
           {/* Add other routes here like <Route path="/register" element={<Register />} /> */}
         </Routes>
 

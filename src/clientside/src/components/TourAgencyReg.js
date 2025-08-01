@@ -1,42 +1,65 @@
 import React, { useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import './TourAgencyReg.css'; 
 
 
 
 export default function TourAgencyReg({ onSubmit }) 
 {
-    const [formData,setFormData]= useState({
-  uid: '',
-  password: '',
+//     const [formData,setFormData]= useState({
+//   uid: '',
+//   password: '',
+//   tour_agency_name: '',
+//   phone_no: '',
+//   agency_email: '',
+//   address: '',
+//   license_number: ''
+// });
+const init={
+  uname: "",
+  password: "",
   tour_agency_name: '',
   phone_no: '',
   agency_email: '',
   address: '',
   license_number: ''
-});
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'update':
-      return { ...state, [action.field]: action.value };
-    case 'reset':
-      return initialInfo;
-    default:
-      return state;
   }
-}
 
-const [info, dispatch] = useReducer(reducer, initialInfo);
 
-    const handleFormSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case 'update':
+//       return { ...state, [action.field]: action.value };
+//     case 'reset':
+//       return initialInfo;
+//     default:
+//       return state;
+//   }
+// }
+
+ const reducer=(state,action)=>{
+    switch(action.type){
+        case 'update':return {...state, [action.field]: action.value};
+        case 'reset': return init;
+    }
+  }
+
+const [info, dispatch] = useReducer(reducer,init);
+
+//     const handleFormSubmit = (e) => {
+//     e.preventDefault();
+//     onSubmit(formData);
+//   };
+
+ const sendData=()=>{
+   
+    }
   
     return(
         <div>
             <h1>Tour Agency Registration</h1>
-            <form onSubmit={handleFormSubmit} onReset={() => dispatch({ type: 'reset' })} noValidate>
+            <form onSubmit={sendData} onReset={() => dispatch({ type: 'reset' })} noValidate>
+          
       <input type="text"
              name="uid"
              placeholder="User ID"
