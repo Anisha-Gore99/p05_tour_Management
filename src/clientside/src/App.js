@@ -5,6 +5,8 @@ import AdminHome from './components/AdminHome';
 import TourAgencyReg from './components/TourAgencyReg';
 import RegisterForm from './components/RegisterForm';   
 import TouristReg from './components/TouristReg';                                                                                                 
+import RegisterForm from './components/RegisterForm';                                                                                                    
+
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function Home() {
@@ -77,7 +79,9 @@ function App() {
           <Link to="/register">Register</Link>
           <Link to="/packages">Tour Packages</Link>
           {/* <Link to="/touragencyreg">Tour Agency Registration</Link> */}
+
         {/* <Link to="/touristreg">Tourist Register</Link> */}
+
         </nav>
 
         <Routes>
@@ -85,7 +89,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/adminhome" element={<AdminHome />} />
           <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister} />} />
+
           <Route path="/touristreg" element={<TouristReg onSubmit={handleTouristRegister} />} />
+
           {/* <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} /> */}
           {/* Add other routes here like <Route path="/register" element={<Register />} /> */}
         </Routes>

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import TourAgencyReg from "./TourAgencyReg";
 import TouristReg from "./TouristReg";
@@ -8,6 +9,18 @@ const RegisterForm = ({ onSubmitAgency, onSubmitTourist }) => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
+
+// src/components/RegisterForm.js
+import React, { useState } from "react";
+import TourAgencyReg from "./TourAgencyReg";
+import './RegisterForm.css'; // Assuming you have some styles for this component
+// import TouristReg from "./TouristReg"; // if you have one
+
+const RegisterForm = ({ onSubmitAgency }) => {
+  const [role, setRole] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = e => {
     e.preventDefault();
     setSubmitted(true);
   };
@@ -38,6 +51,7 @@ const RegisterForm = ({ onSubmitAgency, onSubmitTourist }) => {
     return <TourAgencyReg onSubmit={onSubmitAgency} />;
   }
 
+
   if (role === "tourist") {
     return <TouristReg onSubmit={onSubmitTourist} />;
   }
@@ -47,4 +61,10 @@ const RegisterForm = ({ onSubmitAgency, onSubmitTourist }) => {
 
 export default RegisterForm;
 
+  // If you have a TouristReg component:
+  // return <TouristReg onSubmit={...} />;
+  return <h3>Tourist registration form goes here</h3>;
+};
+
+export default RegisterForm;
 
