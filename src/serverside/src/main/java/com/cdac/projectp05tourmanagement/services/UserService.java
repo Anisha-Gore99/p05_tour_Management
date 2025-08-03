@@ -36,6 +36,7 @@ public class UserService {
 		}
 		return u;
 	}
+
 	public User getOne(int id) {
 		Optional<User>soptional=urepo.findById(id);
 		return soptional.get();
@@ -55,4 +56,10 @@ public class UserService {
 
         return urepo.save(existingUser);
     }
+
+	
+	public User getById(int uid) {
+		return urepo.findById(uid).get();
+	}
+
 }
