@@ -10,6 +10,7 @@ import com.cdac.projectp05tourmanagement.entities.User;
 import com.cdac.projectp05tourmanagement.repositories.UserRepository;
 
 
+
 @Service
 public class UserService {
 
@@ -35,4 +36,23 @@ public class UserService {
 		}
 		return u;
 	}
+	public User getOne(int id) {
+		Optional<User>soptional=urepo.findById(id);
+		return soptional.get();
+	}
+	public User save(User u) {
+		urepo.save(u);
+		return u;
+	}
+	public User updateUser(int id, User updatedUser) {
+        User existingUser = urepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        existingUser.setUname(updatedUser.getUname());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPassword(updatedUser.getPassword());
+        // Add other fields as needed
+
+        return urepo.save(existingUser);
+    }
 }
