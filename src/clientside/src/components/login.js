@@ -36,7 +36,7 @@ function Login() {
         headers:{'content-type':'application/json'},
         body:JSON.stringify(info)
         }   
-        fetch("http://localhost:8080/chkLogin", reqOptions)
+        fetch("http://localhost:8080/api/user/chkLogin", reqOptions)
         .then(resp => {if(resp.ok)
                          return resp.text();
                         else      

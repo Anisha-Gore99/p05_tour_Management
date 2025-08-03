@@ -37,6 +37,13 @@ public class UserService {
 		return u;
 	}
 
+	
+	public User getById(int uid)
+	{
+		return urepo.findById(uid).get();
+	}
+
+
 	public User getOne(int id) {
 		Optional<User>soptional=urepo.findById(id);
 		return soptional.get();
@@ -61,5 +68,6 @@ public class UserService {
 	public User getById(int uid) {
 		return urepo.findById(uid).get();
 	}
+
 
 }
