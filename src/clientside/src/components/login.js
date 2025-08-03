@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import './login.css';
 import axios from 'axios';
 import { type } from '@testing-library/user-event/dist/type';
 import { useNavigate } from 'react-router-dom';
-
+import { login } from './slice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Login() {
 //   const [username, setUsername] = useState('');
@@ -24,6 +25,8 @@ function Login() {
 
   const[info , dispatch] = React.useReducer(reducer, init);
   const navigate = useNavigate();
+  const reduxAction=useDispatch(); //redux action to update the state
+
 
 
   const SendData=(e)=>{
@@ -50,6 +53,7 @@ function Login() {
                     {
                       alert("Request has not been approved!");
                     }else{
+                      reduxAction(login())
                       if(obj.rid.rid===1)
                       {
                           navigate('/adminhome');  // Redirect to admin home page
