@@ -8,6 +8,9 @@ import TouristReg from './components/TouristReg';
 import RegisterForm from './components/RegisterForm';                                                                                                    
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import LogoutComp from './components/LogoutComp';
+import { useSelector } from 'react-redux';
+
 
 function Home() {
   return (<>
@@ -38,6 +41,8 @@ function Home() {
 }
 
 function App() {
+  const mystate =useSelector((state)=>state.logged);// initial state of logged
+
    const handleRegister = async info => {
     console.log('Registering agency:', info);
     try {
@@ -73,7 +78,7 @@ function App() {
    <Router>
       <div className="App">
         <header>Tour Management System</header>
-
+        <div style={{display:mystate.loggedIn?'none':'block'}}>
         <nav>
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
@@ -83,6 +88,7 @@ function App() {
         {/* <Link to="/touristreg">Tourist Register</Link> */}
 
         </nav>
+        </div>
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -90,7 +96,11 @@ function App() {
           <Route path="/adminhome" element={<AdminHome />} />
           <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister} />} />
 
+          <Route path="/logout" element={<LogoutComp/>} />
+
+
           <Route path="/touristreg" element={<TouristReg onSubmit={handleTouristRegister} />} />
+
 
           {/* <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} /> */}
           {/* Add other routes here like <Route path="/register" element={<Register />} /> */}
