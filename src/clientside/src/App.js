@@ -5,7 +5,7 @@ import AdminHome from './components/AdminHome';
 import TourAgencyReg from './components/TourAgencyReg';
 import RegisterForm from './components/RegisterForm';   
 import TouristReg from './components/TouristReg';                                                                                                 
-import RegisterForm from './components/RegisterForm';                                                                                                    
+                                                                                                   
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LogoutComp from './components/LogoutComp';
