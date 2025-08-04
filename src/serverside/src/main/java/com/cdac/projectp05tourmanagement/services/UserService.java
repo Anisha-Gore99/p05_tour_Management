@@ -65,9 +65,6 @@ public class UserService {
     }
 
 	
-	public User getById(int uid) {
-		return urepo.findById(uid).get();
-	}
 
 
 }
