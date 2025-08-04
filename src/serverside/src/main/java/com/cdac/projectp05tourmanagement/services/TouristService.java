@@ -11,9 +11,8 @@ import com.cdac.projectp05tourmanagement.repositories.TouristRepository;
 public class TouristService {
 @Autowired
 TouristRepository touristrepo;
-
-public Tourist getTourist(User u) {
-	return touristrepo.getTourist(u);
+public Tourist getTourist(int uid) {
+    return touristrepo.getTouristByUid(uid);
 }
 
 
