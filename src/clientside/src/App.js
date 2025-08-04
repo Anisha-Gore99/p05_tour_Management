@@ -4,12 +4,18 @@ import Login from './components/login';
 import AdminHome from './components/AdminHome';
 import TourAgencyReg from './components/TourAgencyReg';
 import RegisterForm from './components/RegisterForm';   
+
+import TouristReg from './components/TouristReg';        
+import ViewTours from './components/ViewTours';                                                                                                                                                                                   
+
 import TouristReg from './components/TouristReg';                                                                                                 
                                                                                                    
+
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LogoutComp from './components/LogoutComp';
 import { useSelector } from 'react-redux';
+import TouristHome from './components/TouristHome';
 
 
 function Home() {
@@ -94,12 +100,15 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/adminhome" element={<AdminHome />} />
-          <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister} />} />
+          <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister}  />} />
 
           <Route path="/logout" element={<LogoutComp/>} />
 
 
           <Route path="/touristreg" element={<TouristReg onSubmit={handleTouristRegister} />} />
+           <Route path="/touristhome" element={<TouristHome />}>
+               <Route path="viewtours" element={<ViewTours />} />
+           </Route>
 
 
           {/* <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} /> */}

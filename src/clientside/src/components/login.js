@@ -54,13 +54,14 @@ function Login() {
                       alert("Request has not been approved!");
                     }else{
                       reduxAction(login())
+                      localStorage.setItem("loggedUser", JSON.stringify(obj));
                       if(obj.rid.rid===1)
                       {
                           navigate('/adminhome');  // Redirect to admin home page
                       }
                       else if(obj.rid.rid===2)
                       {
-                        
+                        navigate('/touristhome');  // Redirect to tourist home page 
                       }
                       else if(obj.rid.rid===3)
                       {

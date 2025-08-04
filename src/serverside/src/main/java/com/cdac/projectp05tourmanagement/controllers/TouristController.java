@@ -21,9 +21,10 @@ public class TouristController {
 	@Autowired
 	UserService uservice;
 	
+	
 	@GetMapping("/getTourist")
 	public Tourist getTourist(@RequestParam("uid") int uid) {
-		User u =uservice.getById(uid);
-		return touristservice.getTourist(u);
+	    return touristservice.getTourist(uid);
 	}
+
 }
