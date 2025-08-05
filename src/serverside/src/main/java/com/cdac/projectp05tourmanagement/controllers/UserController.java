@@ -41,6 +41,7 @@ public class UserController {
 	{
 		return uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
 	}
+
 	 //in postman->//http://localhost:8080/api/user/getbyid?id=id from database
 	  @GetMapping("/getbyid")
 	  public User getOne(@RequestParam("id")int id) {
@@ -56,5 +57,6 @@ public class UserController {
 	    User user = uservice.updateUser(id, updatedUser);
 	    return ResponseEntity.ok(user);
 	}
+
 
 }
