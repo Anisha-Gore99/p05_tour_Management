@@ -1,16 +1,4 @@
 
-
-import React, { useState } from "react";
-import TourAgencyReg from "./TourAgencyReg";
-import TouristReg from "./TouristReg";
-import './RegisterForm.css';
-
-
-
-
-
-const RegisterForm = ({ onSubmitAgency,onSubmitTourist }) => {
-
 import React, { useState } from "react";
 import TourAgencyReg from "./TourAgencyReg";
 import TouristReg from "./TouristReg"; // <-- UNCOMMENTED/ADDED THIS LINE
@@ -69,8 +57,6 @@ const RegisterForm = ({ onSubmitAgency, onSubmitTourist }) => {
   //return <h3>Tourist registration form goes here</h3>;
 
   // Fallback for unexpected scenarios (e.g., role not set after submission)
-  return null;
-};
-
+ 
 
 export default RegisterForm;

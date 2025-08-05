@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.controllers;
+package com.p05tourmgmt.userservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cdac.projectp05tourmanagement.entities.Tourist;
-import com.cdac.projectp05tourmanagement.entities.User;
-import com.cdac.projectp05tourmanagement.services.TouristService;
-import com.cdac.projectp05tourmanagement.services.UserService;
+import com.p05tourmgmt.userservice.entities.Tourist;
+import com.p05tourmgmt.userservice.entities.User;
+import com.p05tourmgmt.userservice.services.TouristService;
+import com.p05tourmgmt.userservice.services.UserService;
 
 @CrossOrigin(origins ="http://localhost:3000")
 @RestController

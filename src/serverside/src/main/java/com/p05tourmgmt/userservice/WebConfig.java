@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement;
+package com.p05tourmgmt.userservice;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

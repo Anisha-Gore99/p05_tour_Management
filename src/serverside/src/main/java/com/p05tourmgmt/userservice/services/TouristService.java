@@ -1,11 +1,11 @@
-package com.cdac.projectp05tourmanagement.services;
+package com.p05tourmgmt.userservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cdac.projectp05tourmanagement.entities.Tourist;
-import com.cdac.projectp05tourmanagement.entities.User;
-import com.cdac.projectp05tourmanagement.repositories.TouristRepository;
+import com.p05tourmgmt.userservice.entities.Tourist;
+import com.p05tourmgmt.userservice.entities.User;
+import com.p05tourmgmt.userservice.repositories.TouristRepository;
 
 @Service
 public class TouristService {

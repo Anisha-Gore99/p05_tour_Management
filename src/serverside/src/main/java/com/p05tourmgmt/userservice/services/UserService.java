@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.services;
+package com.p05tourmgmt.userservice.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cdac.projectp05tourmanagement.entities.User;
-import com.cdac.projectp05tourmanagement.repositories.UserRepository;
+import com.p05tourmgmt.userservice.entities.User;
+import com.p05tourmgmt.userservice.repositories.UserRepository;
 
 
 

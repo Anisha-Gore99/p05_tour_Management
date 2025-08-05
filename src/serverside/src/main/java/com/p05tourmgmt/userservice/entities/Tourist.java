@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.entities;
+package com.p05tourmgmt.userservice.entities;
 
 import java.util.Date;
 

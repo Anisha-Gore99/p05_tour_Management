@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.entities;
+package com.p05tourmgmt.userservice.entities;
 
 public class LoginCheck {
 	String uname,password;

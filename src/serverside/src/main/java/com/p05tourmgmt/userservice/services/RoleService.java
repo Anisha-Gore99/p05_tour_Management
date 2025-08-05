@@ -1,9 +1,9 @@
-package com.cdac.projectp05tourmanagement.services;
+package com.p05tourmgmt.userservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cdac.projectp05tourmanagement.repositories.RoleRepository;
+import com.p05tourmgmt.userservice.repositories.RoleRepository;
 
 @Service
 public class RoleService {

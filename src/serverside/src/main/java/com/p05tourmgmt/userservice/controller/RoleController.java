@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.controllers;
+package com.p05tourmgmt.userservice.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

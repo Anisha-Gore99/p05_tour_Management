@@ -1,9 +1,9 @@
-package com.cdac.projectp05tourmanagement.repositories;
+package com.p05tourmgmt.userservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.cdac.projectp05tourmanagement.entities.Tourist;
+import com.p05tourmgmt.userservice.entities.Tourist;
 
 
 

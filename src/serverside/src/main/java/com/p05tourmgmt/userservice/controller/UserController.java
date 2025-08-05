@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.controllers;
+package com.p05tourmgmt.userservice.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cdac.projectp05tourmanagement.entities.LoginCheck;
-import com.cdac.projectp05tourmanagement.entities.User;
-import com.cdac.projectp05tourmanagement.repositories.UserRepository;
-import com.cdac.projectp05tourmanagement.services.UserService;
+import com.p05tourmgmt.userservice.entities.LoginCheck;
+import com.p05tourmgmt.userservice.entities.User;
+import com.p05tourmgmt.userservice.repositories.UserRepository;
+import com.p05tourmgmt.userservice.services.UserService;
 
 
 

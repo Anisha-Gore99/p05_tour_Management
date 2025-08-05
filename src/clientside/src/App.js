@@ -7,8 +7,7 @@ import RegisterForm from './components/RegisterForm';
 
 import TouristReg from './components/TouristReg';        
 import ViewTours from './components/ViewTours';                                                                                                                                                                                   
-
-import TouristReg from './components/TouristReg';                                                                                                 
+                                                                                           
                                                                                                    
 
 

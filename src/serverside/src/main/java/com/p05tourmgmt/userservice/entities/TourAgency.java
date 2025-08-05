@@ -1,4 +1,4 @@
-package com.cdac.projectp05tourmanagement.entities;
+package com.p05tourmgmt.userservice.entities;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.Column;

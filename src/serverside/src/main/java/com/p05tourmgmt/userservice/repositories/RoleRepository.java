@@ -1,9 +1,9 @@
-package com.cdac.projectp05tourmanagement.repositories;
+package com.p05tourmgmt.userservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.cdac.projectp05tourmanagement.entities.Role;
+import com.p05tourmgmt.userservice.entities.Role;
 
 
 @Repository
