@@ -28,6 +28,12 @@ public class TourAgencyController {
 
     @Autowired
     private UserService uservice;
+    
+    @GetMapping("/ping")
+    public String test() {
+        return "Agency service is running";
+    }
+
 
     // ✅ 1. Get TourAgency by user ID
     @GetMapping("/getByUserId")
