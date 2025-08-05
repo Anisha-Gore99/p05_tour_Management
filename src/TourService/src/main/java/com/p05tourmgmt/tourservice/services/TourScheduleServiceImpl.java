@@ -1,0 +1,39 @@
+package com.p05tourmgmt.tourservice.services;
+
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.p05tourmgmt.tourservice.entities.TourSchedule;
+import com.p05tourmgmt.tourservice.repositories.TourScheduleRepository;
+import com.p05tourmgmt.tourservice.services.TourScheduleService;
+
+@Service
+public class TourScheduleServiceImpl implements TourScheduleService {
+
+    @Autowired
+    private TourScheduleRepository tourScheduleRepository;
+
+    @Override
+    public TourSchedule createSchedule(TourSchedule schedule) {
+        return tourScheduleRepository.save(schedule);
+    }
+
+    @Override
+    public List<TourSchedule> getAllSchedules() {
+        return tourScheduleRepository.findAll();
+    }
+
+    @Override
+    public TourSchedule getScheduleById(int id) {
+        return tourScheduleRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteSchedule(int id) {
+        tourScheduleRepository.deleteById(id);
+    }
+}
