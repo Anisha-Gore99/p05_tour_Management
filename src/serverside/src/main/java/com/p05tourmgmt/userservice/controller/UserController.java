@@ -1,60 +1,67 @@
 package com.p05tourmgmt.userservice.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.p05tourmgmt.userservice.entities.LoginCheck;
 import com.p05tourmgmt.userservice.entities.User;
-import com.p05tourmgmt.userservice.repositories.UserRepository;
 import com.p05tourmgmt.userservice.services.UserService;
-
-
 
 @CrossOrigin("http://localhost:3000")
 @RestController
-@RequestMapping("/api/user") 
+@RequestMapping("/api/user")
 public class UserController {
-	@Autowired
-	UserService uservice;
-	
-	
-	@GetMapping("/all")
-	public List<User> getAllUsers() 
-	{
-		return uservice.getAll();
-	}
-	
-	@PostMapping("/chkLogin")
-	public User chkLogin(@RequestBody LoginCheck lcheck)
-	{
-		return uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
-	}
-	 //in postman->//http://localhost:8080/api/user/getbyid?id=id from database
-	  @GetMapping("/getbyid")
-	  public User getOne(@RequestParam("id")int id) {
-		  return uservice.getOne(id);
-	  }
-	  //in postman->http://localhost:8080/api/user/save
-	@PostMapping("/save") 
-	  public User saveuser(@RequestBody User u) {
-		  return uservice.save(u);
-	  }
-	@PutMapping("/update/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
-	    User user = uservice.updateUser(id, updatedUser);
-	    return ResponseEntity.ok(user);
-	}
 
+    @Autowired
+    private UserService uservice;
+
+    // Get all users
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = uservice.getAll();
+        return ResponseEntity.ok(users);
+    }
+
+    // Login check
+    @PostMapping("/chkLogin")
+    public ResponseEntity<User> chkLogin(@RequestBody LoginCheck lcheck) {
+        User user = uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).body(null); // Unauthorized
+        }
+    }
+
+    // Get user by ID
+    @GetMapping("/getbyid")
+    public ResponseEntity<User> getOne(@RequestParam("id") int id) {
+        User user = uservice.getOne(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Save user
+    @PostMapping("/save")
+    public ResponseEntity<User> saveUser(@RequestBody User u) {
+        User saved = uservice.save(u);
+        return ResponseEntity.ok(saved);
+    }
+
+    // Update user
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
+        User user = uservice.updateUser(id, updatedUser);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
