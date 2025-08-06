@@ -1,6 +1,6 @@
 import React, { useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import './TouristReg.css'; 
+import '../../styles/TouristReg.css'; 
 
 
 export default function TouristReg({ onSubmit }) 

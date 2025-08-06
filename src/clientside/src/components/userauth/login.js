@@ -1,9 +1,9 @@
 import React, { use, useState } from 'react';
-import './login.css';
+import '../../styles/login.css'; // Adjust the path as necessary
 import axios from 'axios';
 import { type } from '@testing-library/user-event/dist/type';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../features/slice';
+import { login } from '../../Reduxfeatures/slice.js'; // Adjust the import path as necessary
 import { useDispatch, useSelector } from 'react-redux';
 
 function Login() {

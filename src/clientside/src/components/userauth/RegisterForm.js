@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TourAgencyReg from "../touragency/TourAgencyReg";
 import TouristReg from "../tourist/TouristReg";
-import './RegisterForm.css';
+import '../../styles/RegisterForm.css';
 
 const RegisterForm = ({ onSubmitAgency, onSubmitTourist }) => {
   const [role, setRole] = useState("");
