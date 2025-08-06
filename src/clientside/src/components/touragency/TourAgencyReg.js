@@ -1,6 +1,6 @@
 import React, { useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import './TourAgencyReg.css'; 
+import '../../styles/TourAgencyReg.css'; // Adjust the path as necessary
 
 
 

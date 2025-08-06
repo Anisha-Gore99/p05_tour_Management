@@ -1,21 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
-import Login from './components/login';
-import AdminHome from './components/AdminHome';
-import TourAgencyReg from './components/TourAgencyReg';
-import RegisterForm from './components/RegisterForm';   
+import Login from './components/userauth/login';
+import AdminHome from './components/admin/AdminHome';
+import TourAgencyReg from './components/touragency/TourAgencyReg';
+import RegisterForm from './components/userauth/RegisterForm';   
 
-import TouristReg from './components/TouristReg';        
-import ViewTours from './components/ViewTours';                                                                                                                                                                                   
+import TouristReg from './components/tourist/TouristReg';        
+import ViewTours from './components/tour/ViewTours';                                                                                                                                                                                   
 
-import TouristReg from './components/TouristReg';                                                                                                 
+                                                                                              
                                                                                                    
 
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import LogoutComp from './components/LogoutComp';
+import LogoutComp from './components/userauth/LogoutComp';
 import { useSelector } from 'react-redux';
-import TouristHome from './components/TouristHome';
+import TouristHome from './components/tourist/TouristHome';
 
 
 function Home() {
