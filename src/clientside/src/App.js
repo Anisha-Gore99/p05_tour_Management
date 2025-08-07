@@ -6,10 +6,10 @@ import TourAgencyReg from './components/touragency/TourAgencyReg';
 import RegisterForm from './components/userauth/RegisterForm';   
 
 import TouristReg from './components/tourist/TouristReg';        
-import ViewTours from './components/tour/ViewTours';                                                                                                                                                                                   
+import ViewTours from './components/tour/ViewTours';   
+import TourDetails from './components/tour/TourDetails';                                                                                                                                                                                
 
-                                                                                              
-                                                                                                   
+                                                                                                                                                                             
 
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -89,6 +89,7 @@ function App() {
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
           <Link to="/packages">Tour Packages</Link>
+
           {/* <Link to="/touragencyreg">Tour Agency Registration</Link> */}
 
         {/* <Link to="/touristreg">Tourist Register</Link> */}
@@ -109,6 +110,10 @@ function App() {
            <Route path="/touristhome" element={<TouristHome />}>
                <Route path="viewtours" element={<ViewTours />} />
            </Route>
+          <Route path="/packages" element={<ViewTours />} />
+           <Route path="/tourdetails/:packageId" element={<TourDetails />} />
+
+         
 
 
           {/* <Route path="/touragencyreg" element={<TourAgencyReg onSubmit={handleRegister} />} /> */}
