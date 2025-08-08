@@ -20,41 +20,34 @@ public class TourSchedule {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 @Column(name = "schedule_id")
-	private int scheduleId;
+	 private int scheduleId;
 	 
 	 @Column(name = "start_date")
 	 private LocalDate start_date;
 	
 	 @Column(name = "end_date")
-	private LocalDate end_date;
+	 private LocalDate end_date;
 	 
 	 @Column(name = "duration")
-	int duration;
+	 int duration;
 	 
 	 @Column(name = "cost")
-	BigDecimal cost;
+	 BigDecimal cost;
 	 
 	 @Column(name = "available_bookings")
-	int availableBookings;
+	 int availableBookings;
 	 
 	 @ManyToOne
-	    @JoinColumn(name = "package_id")
-	    private TourPackage tourPackage;
-	 
-	 @Version
-	 @Column(name = "version")
-	 private Long version; 
-	 
+	 @JoinColumn(name = "package_id")
+	 private TourPackage tourPackage;
 	 
 
-	public TourSchedule() {
-		super();
+	 public TourSchedule() {
+			super();
 	}
 
-
-
 	public TourSchedule(int scheduleId, LocalDate start_date, LocalDate end_date, int duration, BigDecimal cost,
-			int availableBookings, TourPackage tourPackage, Long version) {
+			int availableBookings, TourPackage tourPackage) {
 		super();
 		this.scheduleId = scheduleId;
 		this.start_date = start_date;
@@ -63,104 +56,67 @@ public class TourSchedule {
 		this.cost = cost;
 		this.availableBookings = availableBookings;
 		this.tourPackage = tourPackage;
-		this.version = version;
 	}
-
-
 
 	public int getScheduleId() {
 		return scheduleId;
 	}
 
-
-
 	public void setScheduleId(int scheduleId) {
 		this.scheduleId = scheduleId;
 	}
-
-
 
 	public LocalDate getStart_date() {
 		return start_date;
 	}
 
-
-
 	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-
-
 
 	public LocalDate getEnd_date() {
 		return end_date;
 	}
 
-
-
 	public void setEnd_date(LocalDate end_date) {
 		this.end_date = end_date;
 	}
-
-
 
 	public int getDuration() {
 		return duration;
 	}
 
-
-
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-
-
 
 	public BigDecimal getCost() {
 		return cost;
 	}
 
-
-
 	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
-
-
 
 	public int getAvailableBookings() {
 		return availableBookings;
 	}
 
-
-
 	public void setAvailableBookings(int availableBookings) {
 		this.availableBookings = availableBookings;
 	}
-
-
 
 	public TourPackage getTourPackage() {
 		return tourPackage;
 	}
 
-
-
 	public void setTourPackage(TourPackage tourPackage) {
 		this.tourPackage = tourPackage;
 	}
 
-
-
-	public Long getVersion() {
-		return version;
-	}
-
-
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+	
+	 
+	 
 
 	
 	

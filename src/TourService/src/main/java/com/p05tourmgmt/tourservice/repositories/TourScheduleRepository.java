@@ -10,10 +10,5 @@ import com.p05tourmgmt.tourservice.entities.TourSchedule;
 import jakarta.transaction.Transactional;
 
 public interface TourScheduleRepository extends JpaRepository<TourSchedule, Integer> {
-	
-	@Modifying
-    @Transactional
-    @Query("UPDATE TourSchedule ts SET ts.availableBookings = ts.availableBookings - :count WHERE ts.scheduleId = :scheduleId")
-    void decrementBookings(@Param("scheduleId") int scheduleId, @Param("count") int count);
 
 }
