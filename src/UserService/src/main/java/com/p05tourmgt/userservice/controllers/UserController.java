@@ -28,7 +28,7 @@ public class UserController {
 	    private UserServices uservice;
 
 	    // Retrieves a list of all users.- GET
-	    // http://localhost:8080/api/user/all
+	    // http://localhost:8081/api/user/all
 	    @GetMapping("/all")
 	    public ResponseEntity<List<User>> getAllUsers() {
 	        List<User> users = uservice.getAll();
@@ -36,14 +36,14 @@ public class UserController {
 	    }
 	    
 	    // Create a new user -POST
-	    // http://localhost:8080/api/user/createuser
+	    // http://localhost:8081/api/user/createuser
 	    @PostMapping("/createuser")
 	    public User createUser(@RequestBody User user) {
 	        return uservice.saveUser(user);
 	    }
 
 	    // Checks user login credentials.-POST
-	    // http://localhost:8080/api/user/chkLogin
+	    // http://localhost:8081/api/user/chkLogin
 	    @PostMapping("/chkLogin")
 	    public ResponseEntity<User> chkLogin(@RequestBody LoginCheck lcheck) {
 	        User user = uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
@@ -55,7 +55,7 @@ public class UserController {
 	    }
 
 	    // Retrieves a user by their ID.- GET
-	    // http://localhost:8080/api/user/getbyid?id={id}
+	    // http://localhost:8081/api/user/getbyid?id={id}
 	    @GetMapping("/getbyid")
 	    public ResponseEntity<User> getOne(@RequestParam("id") int id) {
 	        User user = uservice.getOne(id);
@@ -67,7 +67,7 @@ public class UserController {
 	    }
 
 	    // Saves a new user.- POST
-	    // http://localhost:8080/api/user/save
+	    // http://localhost:8081/api/user/save
 	    @PostMapping("/save")
 	    public ResponseEntity<User> saveUser(@RequestBody User u) {
 	        User saved = uservice.save(u);
@@ -75,7 +75,7 @@ public class UserController {
 	    }
 
 	    // Updates an existing user by their ID.- PUT
-	    // http://localhost:8080/api/user/update/{id}
+	    // http://localhost:8081/api/user/update/{id}
 	    @PutMapping("/update/{id}")
 	    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
 	        User user = uservice.updateUser(id, updatedUser);
@@ -87,7 +87,7 @@ public class UserController {
 	    }
 	    
 	    // Deletes a user by their ID.- DELETE
-	    // http://localhost:8080/api/user/{id}
+	    // http://localhost:8081/api/user/{id}
 	    @DeleteMapping("/{id}")
 	    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
 	        boolean deleted = uservice.deleteUser(id);
