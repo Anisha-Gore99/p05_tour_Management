@@ -7,7 +7,8 @@ import RegisterForm from './components/userauth/RegisterForm';
 
 import TouristReg from './components/tourist/TouristReg';        
 import ViewTours from './components/tour/ViewTours';   
-import TourDetails from './components/tour/TourDetails';                                                                                                                                                                                
+import TourDetails from './components/tour/TourDetails';        
+import TransactionReport from './components/admin/TransactionReport';                                                                                                                                                                        
 
                                                                                                                                                                              
 
@@ -16,6 +17,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LogoutComp from './components/userauth/LogoutComp';
 import { useSelector } from 'react-redux';
 import TouristHome from './components/tourist/TouristHome';
+import ManageCategories from "./components/admin/ManageCategory";
+import ManageAccounts from "./components/admin/ManageAccount";
+import GenerateReport from "./components/admin/GenerateReport";
 
 
 function Home() {
@@ -112,6 +116,13 @@ function App() {
            </Route>
           <Route path="/packages" element={<ViewTours />} />
            <Route path="/tourdetails/:packageId" element={<TourDetails />} />
+           <Route path="/admin/manage-categories" element={<ManageCategories />} />
+          <Route path="/admin/account-management" element={<ManageAccounts />} />
+          <Route path="/admin/transactions" element={<TransactionReport />} />
+          <Route path="/admin/reports" element={<GenerateReport />} />
+
+
+
 
          
 

@@ -1,39 +1,28 @@
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
+const AdminHome = () => {
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h1>Welcome Admin</h1>
+      <p>Select a management function:</p>
 
-export default function AdminHome(){
-    return(
-         <div>
-           <header>Admin Dashboard</header>
+      <ul>
+        <li>
+          <Link to="/admin/account-management">Account Management</Link>
+        </li>
+        <li>
+          <Link to="/admin/transactions">View Transactions</Link>
+        </li>
+        <li>
+          <Link to="/admin/manage-categories">Manage Travel Categories</Link>
+        </li>
+        <li>
+          <Link to="/admin/reports">Generate Reports</Link>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
-            <nav>
-                <Link to="/adminhome">Home</Link>
-                <Link to="/approveagency">Approve Agency</Link>
-                <Link to="/logout">Logout</Link>
-            </nav>
-
-            <section className="hero">
-                <h1>Welcome, Admin!</h1>
-                <p>Manage tours, approve agencies, and oversee the platform.</p>
-            </section>
-
-            <section>
-                <h2>Quick Actions</h2>
-                <div className="cards">
-                    <div className="card">
-                        <h4>Approve Agencies</h4>
-                        <p>Verify and approve new travel agencies.</p>
-                    </div>
-                    <div className="card">
-                        <h4>View Reports</h4>
-                        <p>See system usage and tour booking reports.</p>
-                    </div>
-                    <div className="card">
-                        <h4>Manage Users</h4>
-                        <p>Oversee tourist and agency user accounts.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-    )
-}
+export default AdminHome;

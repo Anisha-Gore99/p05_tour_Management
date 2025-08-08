@@ -21,7 +21,7 @@ public class TourPackage {
 	@Column(name="destination")
 	String destination;
 	@Column(name="tour_agency_id")
-	Integer tour_agency_id;
+	Integer tourAgencyId;
 	@Column(name="cat_id")
 	Integer cat_id;
 	public TourPackage() {
@@ -34,7 +34,7 @@ public class TourPackage {
 		this.pname = pname;
 		this.description = description;
 		this.destination = destination;
-		this.tour_agency_id = tour_agency_id;
+		this.tourAgencyId = tour_agency_id;
 		this.cat_id = cat_id;
 	}
 	public int getPackage_id() {
@@ -62,10 +62,10 @@ public class TourPackage {
 		this.destination = destination;
 	}
 	public Integer getTour_agency_id() {
-		return tour_agency_id;
+		return tourAgencyId;
 	}
 	public void setTour_agency_id(Integer tour_agency_id) {
-		this.tour_agency_id = tour_agency_id;
+		this.tourAgencyId = tour_agency_id;
 	}
 	public Integer getCat_id() {
 		return cat_id;
@@ -76,7 +76,7 @@ public class TourPackage {
 	@Override
 	public String toString() {
 		return "TourPackage [package_id=" + package_id + ", pname=" + pname + ", description=" + description
-				+ ", destination=" + destination + ", tour_agency_id=" + tour_agency_id + ", cat_id=" + cat_id + "]";
+				+ ", destination=" + destination + ", tour_agency_id=" + tourAgencyId + ", cat_id=" + cat_id + "]";
 	}
 	
 	
