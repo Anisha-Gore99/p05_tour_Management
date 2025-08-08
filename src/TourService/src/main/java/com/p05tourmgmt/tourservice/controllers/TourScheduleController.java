@@ -42,9 +42,5 @@ public class TourScheduleController {
 	        tourScheduleService.deleteSchedule(id);
 	    }
 	    
-	    @PostMapping("/decrement/{scheduleId}")
-	    public ResponseEntity<Void> decrementAvailability(@PathVariable int scheduleId, @RequestParam int count) {
-	        tourScheduleService.decrementAvailableBookings(scheduleId, count);
-	        return ResponseEntity.ok().build();
-	    }
+	   
 }
