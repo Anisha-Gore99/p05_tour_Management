@@ -9,4 +9,5 @@ public interface TourScheduleService {
 	    List<TourSchedule> getAllSchedules();
 	    TourSchedule getScheduleById(int id);
 	    void deleteSchedule(int id);
+	    void decrementAvailableBookings(int scheduleId, int count);
 }
