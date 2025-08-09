@@ -11,8 +11,6 @@ import TourDetails from './components/tour/TourDetails';
 import TransactionReport from './components/admin/TransactionReport';                                                                                                                                                                        
 
                                                                                                                                                                              
-
-
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LogoutComp from './components/userauth/LogoutComp';
 import { useSelector } from 'react-redux';

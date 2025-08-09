@@ -5,11 +5,14 @@ package com.p05tourmgmt.tourservice.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.p05tourmgmt.tourservice.entities.TourSchedule;
 import com.p05tourmgmt.tourservice.repositories.TourScheduleRepository;
 import com.p05tourmgmt.tourservice.services.TourScheduleService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TourScheduleServiceImpl implements TourScheduleService {
@@ -36,4 +39,5 @@ public class TourScheduleServiceImpl implements TourScheduleService {
     public void deleteSchedule(int id) {
         tourScheduleRepository.deleteById(id);
     }
+    
 }

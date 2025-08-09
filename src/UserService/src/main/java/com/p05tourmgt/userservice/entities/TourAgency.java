@@ -36,6 +36,10 @@ public class TourAgency {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uid")
     private User uid;
+
+    @JoinColumn(name = "uid", referencedColumnName = "uid")
+    private User user;
+
     
 
 	public TourAgency() {
@@ -44,7 +48,7 @@ public class TourAgency {
 
 
 	public TourAgency(int tour_agency_id, String tour_agency_name, String phone_no, String agency_email, String address,
-			String license_number, User uid) {
+			String license_number, User user) {
 		super();
 		this.tour_agency_id = tour_agency_id;
 		this.tour_agency_name = tour_agency_name;
@@ -52,7 +56,7 @@ public class TourAgency {
 		this.agency_email = agency_email;
 		this.address = address;
 		this.license_number = license_number;
-		this.uid = uid;
+		this.user = user;
 	}
 
 
@@ -116,14 +120,15 @@ public class TourAgency {
 	}
 
 
-	public User getUid() {
-		return uid;
+	public User getUser() {
+		return user;
 	}
 
 
-	public void setUid(User uid) {
-		this.uid = uid;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
+
+
 	
 }
