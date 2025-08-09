@@ -1,5 +1,6 @@
 package com.p05tourmgt.userservice.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class TourAgency {
     @Column(name = "license_number", nullable = false, length = 255)
     private String license_number;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uid")
     private User uid;
     

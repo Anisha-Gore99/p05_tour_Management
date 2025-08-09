@@ -35,27 +35,30 @@ public class TourAgencyService {
     private PasswordEncoder passwordEncoder;
 
     public TourAgency registerTourAgency(TourAgency tourAgency) {
-        // 1. Find the 'tour_agency' role from the database.
-        Role tourAgencyRole = roleRepository.findByRname("tour_agency");
-        if (tourAgencyRole == null) {
-            throw new RuntimeException("Role 'tour_agency' not found.");
+        User user = tourAgency.getUid();
+        if(user == null) {
+            throw new IllegalArgumentException("User cannot be null");
         }
 
-        User user = tourAgency.getUid();
+        // Set the role id or role entity for this user
+        Role agencyRole = roleRepository.findByRname("tour_agency"); 
+        if(agencyRole == null) {
+            throw new RuntimeException("Tour Agency role not found");
+        }
 
-        // 2. Hash the user's password for security.
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRid(agencyRole);
 
-        // 3. Set the correct role for the user.
-        user.setRid(tourAgencyRole);
+        // encode password
+        if(user.getPassword() == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
 
-        // 4. Save the User first, then link it to the TourAgency.
-        User savedUser = userRepository.save(user);
-        tourAgency.setUid(savedUser);
-
-        // 5. Save the new TourAgency entity.
+        // Save user and agency
         return tourAgencyRepository.save(tourAgency);
     }
+
 
     
     public TourAgency loginAgency(String username, String password) {

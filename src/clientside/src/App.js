@@ -20,6 +20,8 @@ import TouristHome from './components/tourist/TouristHome';
 import ManageCategories from "./components/admin/ManageCategory";
 import ManageAccounts from "./components/admin/ManageAccount";
 import GenerateReport from "./components/admin/GenerateReport";
+import TourAgencyHome from './components/touragency/TourAgencyHome';
+import AgencyViewTour from './components/touragency/AgencyViewTour';
 
 
 function Home() {
@@ -108,6 +110,7 @@ function App() {
           <Route path="/register" element={<RegisterForm onSubmitAgency={handleRegister}  />} />
 
           <Route path="/logout" element={<LogoutComp/>} />
+          <Route path="/agencyhome" element={<TourAgencyHome />} />
 
 
           <Route path="/touristreg" element={<TouristReg onSubmit={handleTouristRegister} />} />
@@ -120,6 +123,9 @@ function App() {
           <Route path="/admin/account-management" element={<ManageAccounts />} />
           <Route path="/admin/transactions" element={<TransactionReport />} />
           <Route path="/admin/reports" element={<GenerateReport />} />
+          <Route path="/agency/tours" element={<AgencyViewTour />} />
+
+
 
 
 

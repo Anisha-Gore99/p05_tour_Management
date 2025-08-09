@@ -65,7 +65,7 @@ function Login() {
                       }
                       else if(obj.rid.rid===3)
                       {
-                      
+                      navigate('/agencyhome');
                       }
                       else
                       {
