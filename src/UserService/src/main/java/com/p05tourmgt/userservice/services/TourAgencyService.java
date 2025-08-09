@@ -38,6 +38,31 @@ public class TourAgencyService {
 
     @Transactional
     public TourAgency registerTourAgency(TourAgency tourAgency) {
+
+        User user = tourAgency.getUid();
+        if(user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        // Set the role id or role entity for this user
+        Role agencyRole = roleRepository.findByRname("tour_agency"); 
+        if(agencyRole == null) {
+            throw new RuntimeException("Tour Agency role not found");
+        }
+
+        user.setRid(agencyRole);
+
+        // encode password
+        if(user.getPassword() == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        // Save user and agency
+        return tourAgencyRepository.save(tourAgency);
+    }
+
         // 1. Find the 'tour_agency' role from the database.
         Role tourAgencyRole = roleRepository.findByRname("tour_agency");
         if (tourAgencyRole == null) {
@@ -62,6 +87,7 @@ public class TourAgencyService {
         // 7. Save the new TourAgency entity.
         return tourAgencyRepository.save(tourAgency);
     }
+
     
     public TourAgency loginAgency(String username, String password) {
         User user = userRepository.findByUname(username);

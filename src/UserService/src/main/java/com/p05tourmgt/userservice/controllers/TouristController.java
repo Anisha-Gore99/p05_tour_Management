@@ -1,10 +1,13 @@
 package com.p05tourmgt.userservice.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +27,7 @@ import com.p05tourmgt.userservice.services.TouristService;
 import com.p05tourmgt.userservice.services.UserServices;
 
 @CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/tourist")
 public class TouristController {
@@ -58,9 +62,28 @@ public class TouristController {
     // Registers a new tourist account.- POST
     //http://localhost:8080/tourist/registertourist
     @PostMapping("/registertourist")
-    public Tourist registerTourist(@RequestBody Tourist tourist) {
-        return tservice.registerTourist(tourist);
+    public ResponseEntity<?> registerTourist(@RequestBody Tourist tourist) {
+        String email = tourist.getUid().getEmail();
+        String uname = tourist.getUid().getUname();
+
+        // Check email duplicate
+        if (uservice.findByEmail(email) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Email already exists");
+        }
+
+        // Check username duplicate
+        if (uservice.findByUname(uname) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Username already exists");
+        }
+
+        // Save new tourist
+        tservice.registerTourist(tourist);
+        return ResponseEntity.ok("Registration successful");
     }
+
+
 
     // Login for a tourist - POST
     //http://localhost:8080/tourist/logintourist
