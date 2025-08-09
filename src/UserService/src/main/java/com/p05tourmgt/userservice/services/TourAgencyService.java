@@ -44,7 +44,7 @@ public class TourAgencyService {
             throw new RuntimeException("Role 'tour_agency' not found.");
         }
 
-        // 2. Get the User object from the TourAgency entity.
+        // 2. Get the User object using the correct getter method.
         User user = tourAgency.getUser();
 
         // 3. Hash the user's password for security.
@@ -62,6 +62,7 @@ public class TourAgencyService {
         // 7. Save the new TourAgency entity.
         return tourAgencyRepository.save(tourAgency);
     }
+    
     
     public TourAgency loginAgency(String username, String password) {
         User user = userRepository.findByUname(username);
