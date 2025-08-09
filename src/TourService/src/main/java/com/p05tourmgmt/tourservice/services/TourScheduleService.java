@@ -6,7 +6,8 @@ import com.p05tourmgmt.tourservice.entities.TourSchedule;
 
 public interface TourScheduleService {
 	 TourSchedule createSchedule(TourSchedule schedule);
-	    List<TourSchedule> getAllSchedules();
-	    TourSchedule getScheduleById(int id);
-	    void deleteSchedule(int id);
+	 List<TourSchedule> getAllSchedules();
+	 TourSchedule getScheduleById(int id);
+	 void deleteSchedule(int id);
+	  
 }
