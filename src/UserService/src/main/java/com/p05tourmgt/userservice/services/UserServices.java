@@ -1,104 +1,114 @@
 package com.p05tourmgt.userservice.services;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.p05tourmgt.userservice.entities.User;
 import com.p05tourmgt.userservice.repositories.UserRepository;
 
-
 @Service
 public class UserServices {
-	
-	@Autowired
-	UserRepository urepo;
-	
-	public List<User> getAll(){
-		return urepo.findAll();
-	}
-	
-	public User getLogin(String uname,String password)
-	{
-		User u;
-		Optional<User> ol = urepo.getLogin(uname, password);
-		try
-		{
-			u=ol.get();
-		}
-		catch(Exception e)
-		{
-			u=null;
-		}
-		return u;
-	}
 
-	
-	public User getById(int uid)
-	{
-		return urepo.findById(uid).get();
-	}
+    private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
+    public UserServices(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	public User getOne(int id) {
-		Optional<User>soptional=urepo.findById(id);
-		return soptional.get();
-	}
-	
-	public User save(User u) {
-		urepo.save(u);
-		return u;
-	}
-	public User updateUser(int id, User updatedUser) {
-        // Find the existing user by ID
-        Optional<User> existingUserOptional = urepo.findById(id);
+    /** Get all users */
+    public List<User> getAll() {
+        return userRepo.findAll();
+    }
 
-        if (existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
+    /**
+     * Authenticate by username OR email with raw password.
+     * Returns the User if credentials are valid; otherwise null.
+     * - Supports BCrypt (normal)
+     * - Supports legacy plaintext (auto-upgrades to BCrypt on first successful login)
+     */
+    public User getLogin(String unameOrEmail, String rawPassword) {
+        if (unameOrEmail == null || rawPassword == null) return null;
 
-            // Conditionally update each field only if it's provided in the request
-            if (updatedUser.getUname() != null) {
-                existingUser.setUname(updatedUser.getUname());
-            }
-            if (updatedUser.getPassword() != null) {
-                existingUser.setPassword(updatedUser.getPassword());
-            }
-            if (updatedUser.getPhone_no() != null) {
-                existingUser.setPhone_no(updatedUser.getPhone_no());
-            }
-            // Note: The email field is deliberately NOT updated here to avoid
-            // the 'Duplicate entry' error and to keep the original email.
+        // Try username first, then email
+        User u = userRepo.findByUname(unameOrEmail);
+        if (u == null) {
+            u = userRepo.findByEmail(unameOrEmail);
+        }
+        if (u == null) return null;
 
-            // Save the existing user with its partially updated fields
-            return urepo.save(existingUser);
+        String stored = u.getPassword();
+        if (stored == null) return null;
+
+        boolean looksBcrypt = stored.startsWith("$2a$") || stored.startsWith("$2b$") || stored.startsWith("$2y$");
+
+        if (looksBcrypt) {
+            // Normal bcrypt path
+            return passwordEncoder.matches(rawPassword, stored) ? u : null;
         } else {
-            // User with the given ID was not found
+            // Legacy plaintext path
+            if (rawPassword.equals(stored)) {
+                // Auto-upgrade to BCrypt and persist
+                String encoded = passwordEncoder.encode(rawPassword);
+                u.setPassword(encoded);
+                userRepo.save(u);
+                return u;
+            }
             return null;
         }
     }
-	
-	public boolean deleteUser(int id) {
-	    if (urepo.existsById(id)) {
-	        urepo.deleteById(id);
-	        return true; // Deletion was successful
-	    }
-	    return false; // User was not found
-	}
-	
-	public User findByEmail(String email) {
-        return urepo.findByEmail(email);
+
+    /** Get by id or null if not found */
+    public User getById(int uid) {
+        return userRepo.findById(uid).orElse(null);
     }
-    
+
+    /** Alias to getById (avoid Optional.get) */
+    public User getOne(int id) {
+        return userRepo.findById(id).orElse(null);
+    }
+
+    /** Save as-is (no forced encoding) */
+    public User save(User u) {
+        return userRepo.save(u);
+    }
+
+    /** Delete by id – returns true if deleted, false if not found */
+    public boolean deleteUser(int id) {
+        if (userRepo.existsById(id)) {
+            userRepo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public User findByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
+
     public User findByUname(String uname) {
-        return urepo.findByUname(uname);
+        return userRepo.findByUname(uname);
     }
-    
- // Create or update a user
+
+    public User findByPhoneNo(String phoneNo) {
+        return userRepo.findByPhoneNo(phoneNo);
+    }
+
+    /**
+     * Create or update a user with password encoding.
+     * If the password already looks like BCrypt, it’s kept as-is.
+     */
     public User saveUser(User user) {
-        return urepo.save(user);
+        String pwd = user.getPassword();
+        if (pwd != null && !pwd.isBlank()) {
+            boolean looksBcrypt = pwd.startsWith("$2a$") || pwd.startsWith("$2b$") || pwd.startsWith("$2y$");
+            if (!looksBcrypt) {
+                user.setPassword(passwordEncoder.encode(pwd));
+            }
+        }
+        return userRepo.save(user);
     }
-
-
 }

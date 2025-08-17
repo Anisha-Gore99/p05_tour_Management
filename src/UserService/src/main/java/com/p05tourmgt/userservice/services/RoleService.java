@@ -22,14 +22,5 @@ public class RoleService {
         return roleRepository.findById(id);
     }
 
-//    public Role saveRole(Role role) {
-//        return roleRepository.save(role);
-//    }
-//
-//    public void deleteRole(Integer id) {
-//        roleRepository.deleteById(id);
-//    }
-//    public Role findByRname(String rname) {
-//        return roleRepository.findByRname(rname);
-//    }
+
 }

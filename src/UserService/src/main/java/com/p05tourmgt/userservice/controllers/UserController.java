@@ -19,7 +19,6 @@ import com.p05tourmgt.userservice.entities.LoginCheck;
 import com.p05tourmgt.userservice.entities.User;
 import com.p05tourmgt.userservice.services.UserServices;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -44,15 +43,26 @@ public class UserController {
 
 	    // Checks user login credentials.-POST
 	    // http://localhost:8081/api/user/chkLogin
-	    @PostMapping("/chkLogin")
-	    public ResponseEntity<User> chkLogin(@RequestBody LoginCheck lcheck) {
-	        User user = uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
-	        if (user != null) {
-	            return ResponseEntity.ok(user);
-	        } else {
-	            return ResponseEntity.status(401).body(null); // Unauthorized
+	    @PostMapping(value = "/chkLogin", consumes = "application/json") // omit produces => defaults to JSON via Jackson
+	    public ResponseEntity<?> chkLogin(@RequestBody LoginCheck lcheck) {
+	        if (lcheck == null || lcheck.getUname() == null || lcheck.getPassword() == null) {
+	            return ResponseEntity.badRequest().body(
+	                java.util.Map.of("message", "Missing uname or password")
+	            );
 	        }
+
+	        User user = uservice.getLogin(lcheck.getUname(), lcheck.getPassword());
+	        if (user == null) {
+	            return ResponseEntity.status(401).body(
+	                java.util.Map.of("message", "Invalid credentials")
+	            );
+	        }
+
+	        // Optional: hide sensitive fields before returning
+	        user.setPassword(null);
+	        return ResponseEntity.ok(user); // JSON
 	    }
+
 
 	    // Retrieves a user by their ID.- GET
 	    // http://localhost:8081/api/user/getbyid?id={id}
@@ -74,17 +84,6 @@ public class UserController {
 	        return ResponseEntity.ok(saved);
 	    }
 
-	    // Updates an existing user by their ID.- PUT
-	    // http://localhost:8081/api/user/update/{id}
-	    @PutMapping("/update/{id}")
-	    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
-	        User user = uservice.updateUser(id, updatedUser);
-	        if (user != null) {
-	            return ResponseEntity.ok(user);
-	        } else {
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
 	    
 	    // Deletes a user by their ID.- DELETE
 	    // http://localhost:8081/api/user/{id}
