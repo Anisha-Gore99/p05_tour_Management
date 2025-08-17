@@ -1,12 +1,25 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../Reduxfeatures/slice";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../Reduxfeatures/slice.js";
-import { useDispatch } from 'react-redux';
 
-export default function LogoutComp(){
-    const navigate =useNavigate();
-    const dispatch =useDispatch();
-    localStorage.clear();
-    dispatch(logout()) //loggedIn will become false
-    navigate("/")
-    return null; // prevents rendering issues
+export default function LogoutComp() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      // Clear persisted session first
+      localStorage.removeItem("loggedUser");
+      localStorage.removeItem("loggedTourist");
+    } catch (_) {}
+
+    // Update Redux
+    dispatch(logout());
+
+    // Go home
+    navigate("/", { replace: true });
+  }, [dispatch, navigate]);
+
+  return <p style={{ padding: 16 }}>Logging out…</p>;
 }

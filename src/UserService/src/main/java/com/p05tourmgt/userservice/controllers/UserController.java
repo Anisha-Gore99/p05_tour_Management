@@ -74,17 +74,6 @@ public class UserController {
 	        return ResponseEntity.ok(saved);
 	    }
 
-	    // Updates an existing user by their ID.- PUT
-	    // http://localhost:8081/api/user/update/{id}
-	    @PutMapping("/update/{id}")
-	    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
-	        User user = uservice.updateUser(id, updatedUser);
-	        if (user != null) {
-	            return ResponseEntity.ok(user);
-	        } else {
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
 	    
 	    // Deletes a user by their ID.- DELETE
 	    // http://localhost:8081/api/user/{id}

@@ -14,33 +14,31 @@ const ManageAccount = () => {
   };
 
   const deleteUser = async (uid) => {
-  try {
-    await axios.delete(`http://localhost:8082/api/admin/users/${uid}`);
-    alert("User deleted successfully");
-    fetchUsers(); // refresh the user list
-  } catch (err) {
-    if (err.response && err.response.data) {
-      // Show the actual backend message
-      alert("Delete failed: " + err.response.data);
-    } else {
-      alert("Delete failed: Unknown error");
-      console.error("Error deleting user:", err);
+    try {
+      await axios.delete(`http://localhost:8082/api/admin/users/${uid}`);
+      alert("User deleted successfully");
+      fetchUsers(); // refresh the user list
+    } catch (err) {
+      if (err.response && err.response.data) {
+        alert("Delete failed: " + err.response.data);
+      } else {
+        alert("Delete failed: Unknown error");
+        console.error("Error deleting user:", err);
+      }
     }
-  }
-};
-
+  };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="manage-account-container">
       <h2>Account Management</h2>
       {users.length === 0 ? (
-        <p>No users found.</p>
+        <p className="manage-account-no-users">No users found.</p>
       ) : (
-        <table border="1" cellPadding="8" cellSpacing="0">
+        <table className="manage-account-table">
           <thead>
             <tr>
               <th>User ID</th>
@@ -56,9 +54,7 @@ const ManageAccount = () => {
                 <td>{u.uname}</td>
                 <td>{u.email}</td>
                 <td>
-                  <button onClick={() => deleteUser(u.uid)} style={{ color: "red" }}>
-                    Delete
-                  </button>
+                  <button onClick={() => deleteUser(u.uid)}>Delete</button>
                 </td>
               </tr>
             ))}

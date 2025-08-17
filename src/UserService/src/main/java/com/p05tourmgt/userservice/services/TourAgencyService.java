@@ -3,9 +3,9 @@ package com.p05tourmgt.userservice.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.p05tourmgt.userservice.entities.Role;
 import com.p05tourmgt.userservice.entities.TourAgency;
@@ -14,112 +14,57 @@ import com.p05tourmgt.userservice.repositories.RoleRepository;
 import com.p05tourmgt.userservice.repositories.TourAgencyRepository;
 import com.p05tourmgt.userservice.repositories.UserRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class TourAgencyService {
 
-    @Autowired
-    private TourAgencyRepository tourAgencyRepository;
+    private final TourAgencyRepository agencyRepo;
+    private final UserRepository userRepo;
+    private final RoleRepository roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private RoleRepository roleRepository;
-
-    // 1. Get a TourAgency by its associated User
-    public TourAgency getTourAgency(User user) {
-        return tourAgencyRepository.findByUser(user);
+    public TourAgencyService(
+        TourAgencyRepository agencyRepo,
+        UserRepository userRepo,
+        RoleRepository roleRepo,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.agencyRepo = agencyRepo;
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
     }
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
+    /** Register new agency: attach role 'tour_agency', encode password, save User -> Agency */
     @Transactional
-    public TourAgency registerTourAgency(TourAgency tourAgency) {
-
-        User user = tourAgency.getUid();
-        if(user == null) {
-            throw new IllegalArgumentException("User cannot be null");
+    public TourAgency registerAgency(TourAgency agency) {
+        if (agency == null || agency.getUser() == null) {
+            throw new IllegalArgumentException("Agency and nested User must not be null");
         }
 
-        // Set the role id or role entity for this user
-        Role agencyRole = roleRepository.findByRname("tour_agency"); 
-        if(agencyRole == null) {
-            throw new RuntimeException("Tour Agency role not found");
+        Role agencyRole = roleRepo.findByRnameIgnoreCase("tour_agency")
+            .orElseThrow(() -> new IllegalStateException("Role 'tour_agency' not found. Seed roles first."));
+
+        User u = agency.getUser();
+        u.setRid(agencyRole);
+
+        if (u.getPassword() != null && !u.getPassword().isBlank()) {
+            u.setPassword(passwordEncoder.encode(u.getPassword()));
         }
 
-        user.setRid(agencyRole);
+        // save user first, then agency
+        User savedUser = userRepo.save(u);
+        agency.setUser(savedUser);
 
-        // encode password
-        if(user.getPassword() == null) {
-            throw new IllegalArgumentException("Password cannot be null");
-        }
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        // Save user and agency
-        return tourAgencyRepository.save(tourAgency);
+        return agencyRepo.save(agency);
     }
 
-        // 1. Find the 'tour_agency' role from the database.
-        Role tourAgencyRole = roleRepository.findByRname("tour_agency");
-        if (tourAgencyRole == null) {
-            throw new RuntimeException("Role 'tour_agency' not found.");
-        }
+    public List<TourAgency> getAllAgencies() { return agencyRepo.findAll(); }
 
-        // 2. Get the User object using the correct getter method.
-        User user = tourAgency.getUser();
+    public TourAgency getTourAgency(User user) { return agencyRepo.findByUser(user); }
 
-        // 3. Hash the user's password for security.
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public Optional<TourAgency> getAgencyById(Integer id) { return agencyRepo.findById(id); }
 
-        // 4. Set the correct role for the user.
-        user.setRid(tourAgencyRole);
+    public TourAgency saveOrUpdateAgency(TourAgency agency) { return agencyRepo.save(agency); }
 
-        // 5. Explicitly save the User first to make it a managed entity.
-        User savedUser = userRepository.save(user);
-
-        // 6. Set the newly saved User object back on the TourAgency.
-        tourAgency.setUser(savedUser);
-
-        // 7. Save the new TourAgency entity.
-        return tourAgencyRepository.save(tourAgency);
-    }
-
-    
-    
-    public TourAgency loginAgency(String username, String password) {
-        User user = userRepository.findByUname(username);
-
-        // Check if the user exists, password matches, and the role is 'tour_agency'.
-        if (user != null && passwordEncoder.matches(password, user.getPassword()) && user.getRid().getRname().equals("tour_agency")) {
-            // Find and return the tour agency associated with this user.
-            return tourAgencyRepository.findByUser(user);
-        }
-
-        // If any of the conditions fail, return null.
-        return null;
-    }
-    
-    // 4. Get all tour agencies (Read operation)
-    public List<TourAgency> getAllAgencies() {
-        return tourAgencyRepository.findAll();
-    }
-
-    // 5. Get an agency by its ID (Read operation)
-    public Optional<TourAgency> getAgencyById(Integer id) {
-        return tourAgencyRepository.findById(id);
-    }
-    
-    // 6. Save or update a tour agency (Update operation)
-    public TourAgency saveOrUpdateAgency(TourAgency agency) {
-        return tourAgencyRepository.save(agency);
-    }
-
-    // 7. Delete an agency by its ID (Delete operation)
-    public void deleteAgency(Integer id) {
-        tourAgencyRepository.deleteById(id);
-    }
+    public void deleteAgency(Integer id) { agencyRepo.deleteById(id); }
 }

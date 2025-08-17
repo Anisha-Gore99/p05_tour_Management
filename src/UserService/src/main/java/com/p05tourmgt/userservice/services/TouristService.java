@@ -3,9 +3,9 @@ package com.p05tourmgt.userservice.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.p05tourmgt.userservice.entities.Role;
 import com.p05tourmgt.userservice.entities.Tourist;
@@ -17,80 +17,56 @@ import com.p05tourmgt.userservice.repositories.UserRepository;
 @Service
 public class TouristService {
 
-    @Autowired
-    private TouristRepository touristRepository;
+    private final TouristRepository touristRepo;
+    private final UserRepository userRepo;
+    private final RoleRepository roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    TouristService(PasswordEncoder passwordEncoder) {
+    public TouristService(
+        TouristRepository touristRepo,
+        UserRepository userRepo,
+        RoleRepository roleRepo,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.touristRepo = touristRepo;
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
-    
-    // 1. Get a Tourist by its associated User
+
     public Tourist getTourist(User user) {
-        return touristRepository.findByUid(user);
+        return touristRepo.findByUid(user);
     }
 
- // 1. Register a new Tourist (Create operation)
+    @Transactional
     public Tourist registerTourist(Tourist tourist) {
-        // Ensure the 'tourist' role exists in your database and is assigned
-        Role touristRole = roleRepository.findByRname("tourist");
-        if (touristRole == null) {
-            // Handle case where role doesn't exist, perhaps create it or throw an exception
-            // For now, let's assume it exists or create a placeholder
-            touristRole = new Role(0, "tourist"); // Placeholder, ensure proper ID if creating
-            roleRepository.save(touristRole); // Save the role if it doesn't exist
+        if (tourist == null || tourist.getUid() == null) {
+            throw new IllegalArgumentException("Tourist and nested User must not be null");
         }
+
+        // Attach MANAGED 'tourist' role (case-insensitive)
+        Role touristRole = roleRepo.findByRnameIgnoreCase("tourist")
+            .orElseThrow(() -> new IllegalStateException("Role 'tourist' not found. Seed roles first."));
 
         User user = tourist.getUid();
-        
-        // 🛑 Hash the password before saving for security
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        
-        user.setRid(touristRole); // Set the role for the user
+        user.setRid(touristRole);
 
-        User savedUser = userRepository.save(user); // Save the user first
-        tourist.setUid(savedUser); // Link the saved user to the tourist
-        
-        return touristRepository.save(tourist); // Save the tourist
-    }
-
-    // 2. Login for a tourist
-    public Tourist loginTourist(String username, String password) {
-        User user = userRepository.findByUname(username); // Find user by username
-        
-        // Corrected password comparison using matches()
-        if (user != null && passwordEncoder.matches(password, user.getPassword()) && user.getRid().getRname().equals("tourist")) {
-            return touristRepository.findByUid(user); // Return tourist if credentials and role match
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        
-        return null; // Return null for invalid credentials or incorrect role
+
+        // Save User first, then Tourist
+        User savedUser = userRepo.save(user);
+        tourist.setUid(savedUser);
+
+        return touristRepo.save(tourist);
     }
 
-    // 4. Get all tourists (Read operation)
-    public List<Tourist> getAllTourists() {
-        return touristRepository.findAll();
-    }
+    public List<Tourist> getAllTourists() { return touristRepo.findAll(); }
 
-    // 5. Get a tourist by their ID (Read operation)
-    public Optional<Tourist> getTouristById(int id) {
-        return touristRepository.findById(id);
-    }
-    
-    // 6. Save or update a tourist (Update operation)
-    public Tourist saveOrUpdateTourist(Tourist tourist) {
-        return touristRepository.save(tourist);
-    }
+    public Optional<Tourist> getTouristById(int id) { return touristRepo.findById(id); }
 
-    // 7. Delete a tourist by their ID (Delete operation)
-    public void deleteTourist(int id) {
-        touristRepository.deleteById(id);
-    }
+    public Tourist saveOrUpdateTourist(Tourist tourist) { return touristRepo.save(tourist); }
+
+    public void deleteTourist(int id) { touristRepo.deleteById(id); }
 }
