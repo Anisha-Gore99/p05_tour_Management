@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PaymentCancellationService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dabe32f6499492670679007c21553c2d43a2d3cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("PaymentCancellationService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PaymentCancellationService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

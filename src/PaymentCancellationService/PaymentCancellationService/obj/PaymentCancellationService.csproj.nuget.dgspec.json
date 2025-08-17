@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Siddhi\\OneDrive\\Desktop\\P05_TourManagment_Project\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj": {}
+    "D:\\p05_tour_mgmt_project\\Project_code_main\\p05_tour_Management\\src\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Siddhi\\OneDrive\\Desktop\\P05_TourManagment_Project\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj": {
+    "D:\\p05_tour_mgmt_project\\Project_code_main\\p05_tour_Management\\src\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Siddhi\\OneDrive\\Desktop\\P05_TourManagment_Project\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj",
+        "projectUniqueName": "D:\\p05_tour_mgmt_project\\Project_code_main\\p05_tour_Management\\src\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj",
         "projectName": "PaymentCancellationService",
-        "projectPath": "C:\\Users\\Siddhi\\OneDrive\\Desktop\\P05_TourManagment_Project\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj",
-        "packagesPath": "C:\\Users\\Siddhi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Siddhi\\OneDrive\\Desktop\\P05_TourManagment_Project\\PaymentCancellationService\\PaymentCancellationService\\obj\\",
+        "projectPath": "D:\\p05_tour_mgmt_project\\Project_code_main\\p05_tour_Management\\src\\PaymentCancellationService\\PaymentCancellationService\\PaymentCancellationService.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "D:\\p05_tour_mgmt_project\\Project_code_main\\p05_tour_Management\\src\\PaymentCancellationService\\PaymentCancellationService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Siddhi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -94,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

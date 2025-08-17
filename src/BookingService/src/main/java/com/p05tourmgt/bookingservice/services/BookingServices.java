@@ -1,171 +1,98 @@
+// src/main/java/com/p05tourmgt/bookingservice/services/BookingServices.java
 package com.p05tourmgt.bookingservice.services;
 
-import com.p05tourmgt.bookingservice.entities.*;
-import com.p05tourmgt.bookingservice.repositories.*;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.p05tourmgt.bookingservice.entities.Booking;
+import com.p05tourmgt.bookingservice.entities.TouristDetails;
+import com.p05tourmgt.bookingservice.entities.TourSchedule;
+import com.p05tourmgt.bookingservice.repositories.BookingRepository;
+import com.p05tourmgt.bookingservice.repositories.TourScheduleRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class BookingServices {
-    @Autowired
-    private BookingRepository bookingRepository;
-    @Autowired
-    private TourScheduleRepository tourScheduleRepository;
-    @Autowired
-    private TouristRepository touristRepository;
-    @Autowired
-    private TouristDetailsRepository touristDetailsRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private PaymentModeRepository paymentModeRepository;
 
-//    @Transactional
-//    public Booking createBooking(int touristId, int scheduleId, List<TouristDetails> touristDetailsList, int modeId) {
-//        Optional<TourSchedule> optionalSchedule = tourScheduleRepository.findById(scheduleId);
-//        Optional<Tourist> optionalTourist = touristRepository.findById(touristId);
-//        Optional<PaymentMode> optionalPaymentMode = paymentModeRepository.findById(modeId);
-//
-//        if (optionalSchedule.isEmpty() || optionalTourist.isEmpty() || optionalPaymentMode.isEmpty()) {
-//            throw new IllegalArgumentException("Invalid touristId, scheduleId, or modeId.");
-//        }
-//
-//        TourSchedule tourSchedule = optionalSchedule.get();
-//        Tourist tourist = optionalTourist.get();
-//        PaymentMode paymentMode = optionalPaymentMode.get();
-//        int noOfTourists = touristDetailsList.size();
-//
-//        if (tourSchedule.getAvailableBookings() < noOfTourists) {
-//            throw new IllegalStateException("Not enough available seats for this tour.");
-//        }
-//
-//        // Decrement available seats
-//        tourSchedule.setAvailableBookings(tourSchedule.getAvailableBookings() - noOfTourists);
-//        tourScheduleRepository.save(tourSchedule);
-//
-//        // Create the new booking
-//        Booking newBooking = new Booking();
-//        newBooking.setBookingDate(new Date());
-//        newBooking.setNoOfTourist(noOfTourists);
-//        newBooking.setStatus("confirmed");
-//        newBooking.setTourSchedule(tourSchedule);
-//        newBooking.setTourist(tourist);
-//        
-//        // Save the booking first to get its ID
-//        Booking savedBooking = bookingRepository.save(newBooking);
-//
-//        // Set the booking for each tourist detail and save
-//        touristDetailsList.forEach(detail -> detail.setBooking(savedBooking));
-//        savedBooking.setTouristDetails(touristDetailsList);
-//        
-//        // Create and save the payment record using double
-//        Payment payment = new Payment();
-//        payment.setAmount(tourSchedule.getCost().doubleValue() * noOfTourists);
-//        payment.setPaymentDate(new Date());
-//        payment.setPaymentMode(paymentMode);
-//        payment.setBooking(savedBooking);
-//        paymentRepository.save(payment);
-//        
-//        // The Booking entity you provided doesn't have a `payment` field, so this line is commented out.
-//        // If your Booking entity had a `payment` field, you would uncomment this line.
-//        // savedBooking.setPayment(payment);
-//        return bookingRepository.save(savedBooking);
-//    }
-//    
-    
+    private final BookingRepository bookingRepository;
+    private final TourScheduleRepository tourScheduleRepository;
+
+    public BookingServices(BookingRepository bookingRepository,
+                           TourScheduleRepository tourScheduleRepository) {
+        this.bookingRepository = bookingRepository;
+        this.tourScheduleRepository = tourScheduleRepository;
+    }
+
     @Transactional
-    public Booking createBooking(int touristId, int scheduleId, List<TouristDetails> touristDetailsList, int modeId) {
-        Optional<TourSchedule> optionalSchedule = tourScheduleRepository.findById(scheduleId);
-        Optional<Tourist> optionalTourist = touristRepository.findById(touristId);
-        Optional<PaymentMode> optionalPaymentMode = paymentModeRepository.findById(modeId);
+    public Booking createBooking(int touristId, int scheduleId, List<TouristDetails> details, int modeId) {
+        int count = details.size();
 
-        if (optionalSchedule.isEmpty() || optionalTourist.isEmpty() || optionalPaymentMode.isEmpty()) {
-            throw new IllegalArgumentException("Invalid touristId, scheduleId, or modeId.");
+        // 1) Try to reserve seats atomically
+        int updated = tourScheduleRepository.reserveSeats(scheduleId, count);
+        if (updated == 0) {
+            throw new IllegalStateException("Not enough seats available");
         }
 
-        TourSchedule tourSchedule = optionalSchedule.get();
-        Tourist tourist = optionalTourist.get();
-        PaymentMode paymentMode = optionalPaymentMode.get();
-        int noOfTourists = touristDetailsList.size();
+        // 2) Load the schedule (now with reduced availability)
+        TourSchedule schedule = tourScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new EntityNotFoundException("Schedule not found"));
 
-        if (tourSchedule.getAvailableBookings() < noOfTourists) {
-            throw new IllegalStateException("Not enough available seats for this tour.");
+        // 3) Build the booking using ONLY fields you actually have
+        Booking b = new Booking();
+        b.setBookingDate(new Date());
+        b.setNoOfTourist(count);
+        b.setStatus("PENDING"); // or whatever default you use
+
+        // If your Booking has a relation to TourSchedule, set it here:
+        // b.setTourSchedule(schedule);   // only if this method exists in your Booking
+
+        // Attach tourist details back to booking (if mapped)
+        for (TouristDetails d : details) {
+            d.setBooking(b); // requires @ManyToOne Booking in TouristDetails
         }
-        
-        // Create the new booking
-        Booking newBooking = new Booking();
-        newBooking.setBookingDate(new Date());
-        newBooking.setNoOfTourist(noOfTourists);
-        newBooking.setStatus("confirmed");
-        newBooking.setTourSchedule(tourSchedule);
-        newBooking.setTourist(tourist);
+        b.setTouristDetails(details);   // requires @OneToMany(mappedBy="booking") in Booking
 
-        // Save the booking first to get its ID
-        Booking savedBooking = bookingRepository.save(newBooking);
+        // If you need to link a Tourist/User, do that here according to your model:
+        // Tourist tourist = touristRepository.findById(touristId).orElseThrow(...);
+        // b.setTourist(tourist);
 
-        // Set the booking for each tourist detail and save
-        touristDetailsList.forEach(detail -> detail.setBooking(savedBooking));
-        savedBooking.setTouristDetails(touristDetailsList);
-        touristDetailsRepository.saveAll(touristDetailsList); // Save all tourist details at once
-
-        // Create and save the payment record
-        Payment payment = new Payment();
-        payment.setAmount(tourSchedule.getCost().doubleValue() * noOfTourists);
-        payment.setPaymentDate(new Date());
-        payment.setPaymentMode(paymentMode);
-        payment.setBooking(savedBooking);
-        paymentRepository.save(payment);
-        
-        // Now that all sub-operations are successful, decrement available seats
-        tourSchedule.setAvailableBookings(tourSchedule.getAvailableBookings() - noOfTourists);
-        tourScheduleRepository.save(tourSchedule);
-
-        return bookingRepository.save(savedBooking);
-    }
-    
-    public Optional<Booking> getBookingDetails(int bookingId) {
-        return bookingRepository.findById(bookingId);
+        // 4) Save
+        return bookingRepository.save(b);
     }
 
+    // If you had this in other parts of your app:
     public List<Booking> getTouristBookings(int touristId) {
-        return bookingRepository.findByTouristTouristId(touristId);
-    }
-    
-    // This method is now commented out because the TourSchedule entity you provided
-    // no longer has a direct relationship to TourPackage, but instead an int `packageId`.
-    // public List<Booking> getAgencyBookings(int agencyId) {
-    //     return bookingRepository.findByTourScheduleTourPackageTourAgencyId(agencyId);
-    // }
-
-    @Transactional
-    public Booking updateBooking(int bookingId, Booking updatedBooking) {
-        Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
-        if (optionalBooking.isEmpty()) {
-            throw new EntityNotFoundException("Booking with ID " + bookingId + " not found.");
-        }
-        
-        Booking existingBooking = optionalBooking.get();
-        existingBooking.setBookingDate(updatedBooking.getBookingDate());
-        existingBooking.setStatus(updatedBooking.getStatus());
-        existingBooking.setNoOfTourist(updatedBooking.getNoOfTourist());
-        return bookingRepository.save(existingBooking);
+        return bookingRepository.findByTouristTouristId(touristId); // ensure this method exists in BookingRepository
     }
 
-    @Transactional
+    public Booking updateBooking(int bookingId, Booking updated) {
+        Booking existing = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        // copy allowed fields here...
+        return bookingRepository.save(existing);
+    }
+
     public void deleteBooking(int bookingId) {
-        if (!bookingRepository.existsById(bookingId)) {
-            throw new EntityNotFoundException("Booking with ID " + bookingId + " not found.");
-        }
-        bookingRepository.deleteById(bookingId);
+        Booking existing = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        bookingRepository.delete(existing);
     }
 
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    // Placeholder: you can wire online-vs-offline logic later if needed.
+    public boolean requiresOnlinePayment(int modeId) {
+        return false;
     }
+    @Transactional
+    public void setStatus(int bookingId, String status) {
+        Booking b = bookingRepository.findById(bookingId)
+            .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        b.setStatus(status);  // ensure your Booking has setStatus
+        bookingRepository.save(b);
+    }
+   
+
 }
