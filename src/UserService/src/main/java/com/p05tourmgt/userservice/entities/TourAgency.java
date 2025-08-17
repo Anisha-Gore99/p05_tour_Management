@@ -33,11 +33,8 @@ public class TourAgency {
     @Column(name = "license_number", nullable = false, length = 255)
     private String license_number;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uid")
-    private User uid;
-
-    @JoinColumn(name = "uid", referencedColumnName = "uid")
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "uid", nullable = false) 
     private User user;
 
     

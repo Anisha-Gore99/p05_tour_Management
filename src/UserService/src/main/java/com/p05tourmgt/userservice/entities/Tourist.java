@@ -1,102 +1,53 @@
 package com.p05tourmgt.userservice.entities;
 
-import java.util.Date;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tourist")
 public class Tourist {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tourist_id")
-    private int tourist_id;
 
-    @Column(name = "dob")
-    private Date dob;
-
-    @Column(name = "address", nullable = false, length = 255)
-    private String address;
-
-    @Column(name = "fname", length = 255)
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Column(name = "tourist_id")   // <-- map to existing AI PK column
+	    private Integer tid;
+	 
+    @NotBlank(message = "First name is required")
     private String fname;
 
-    @Column(name = "lname", length = 255)
+    @NotBlank(message = "Last name is required")
     private String lname;
 
-    @OneToOne
-    @JoinColumn(name = "uid")
-    private User uid;
+    @NotBlank(message = "Address is required")
+    private String address;
 
-	public Tourist() {
-		super();
-	}
+    private String dob;
 
-	public Tourist(int tourist_id, Date dob, String address, String fname, String lname, User uid) {
-		super();
-		this.tourist_id = tourist_id;
-		this.dob = dob;
-		this.address = address;
-		this.fname = fname;
-		this.lname = lname;
-		this.uid = uid;
-	}
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "uid", nullable = false)
+    @Valid                       // ✅ validate nested user
+    private User uid;            // ✅ field name must be 'uid' to match JSON
 
-	public int getTourist_id() {
-		return tourist_id;
-	}
+    public Tourist() {}
 
-	public void setTourist_id(int tourist_id) {
-		this.tourist_id = tourist_id;
-	}
+    // getters/setters
+    public Integer getTid() { return tid; }
+    public void setTid(Integer tid) { this.tid = tid; }
 
-	public Date getDob() {
-		return dob;
-	}
+    public String getFname() { return fname; }
+    public void setFname(String fname) { this.fname = fname; }
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public String getLname() { return lname; }
+    public void setLname(String lname) { this.lname = lname; }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getDob() { return dob; }
+    public void setDob(String dob) { this.dob = dob; }
 
-	public String getFname() {
-		return fname;
-	}
-
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
-
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public User getUid() {
-		return uid;
-	}
-
-	public void setUid(User uid) {
-		this.uid = uid;
-	}
-
-	
+    public User getUid() { return uid; }
+    public void setUid(User uid) { this.uid = uid; }
 }
+
