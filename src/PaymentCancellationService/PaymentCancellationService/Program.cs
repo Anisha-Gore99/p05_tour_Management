@@ -1,31 +1,48 @@
 using Microsoft.EntityFrameworkCore;
-using PaymentCancellationService.Data; // Assuming your DbContext is in a 'Data' folder
+using PaymentCancellationService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Controllers
 builder.Services.AddControllers();
 
-// Configure MySQL DbContext
+// === CORS for React (http://localhost:3000) ===
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("react", p => p
+        .WithOrigins("http://localhost:3000")   // your React dev server
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    // .AllowCredentials() // only if you send cookies/auth
+    );
+});
+
+// MySQL DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 31)))); // Use the correct MySQL version
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 31))
+    ));
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Swagger UI in dev
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// HTTPS redirect (keep this if your API listens on HTTPS;
+// if you only expose HTTP in dev, comment this out)
 app.UseHttpsRedirection();
+
+// *** Enable CORS BEFORE MapControllers ***
+app.UseCors("react");
 
 app.UseAuthorization();
 
