@@ -1,5 +1,4 @@
 import React, { use, useState } from 'react';
-import '../../styles/login.css'; // Adjust the path as necessary
 import axios from 'axios';
 import { type } from '@testing-library/user-event/dist/type';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +64,7 @@ function Login() {
                       }
                       else if(obj.rid.rid===3)
                       {
-                      
+                      navigate('/agencyhome');
                       }
                       else
                       {

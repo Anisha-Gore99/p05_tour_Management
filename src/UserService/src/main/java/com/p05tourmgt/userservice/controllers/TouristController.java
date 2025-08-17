@@ -1,10 +1,13 @@
 package com.p05tourmgt.userservice.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +27,7 @@ import com.p05tourmgt.userservice.services.TouristService;
 import com.p05tourmgt.userservice.services.UserServices;
 
 @CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/tourist")
 public class TouristController {
@@ -58,9 +62,28 @@ public class TouristController {
     // Registers a new tourist account.- POST
     //http://localhost:8080/tourist/registertourist
     @PostMapping("/registertourist")
-    public Tourist registerTourist(@RequestBody Tourist tourist) {
-        return tservice.registerTourist(tourist);
+    public ResponseEntity<?> registerTourist(@RequestBody Tourist tourist) {
+        String email = tourist.getUid().getEmail();
+        String uname = tourist.getUid().getUname();
+
+        // Check email duplicate
+        if (uservice.findByEmail(email) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Email already exists");
+        }
+
+        // Check username duplicate
+        if (uservice.findByUname(uname) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body("Username already exists");
+        }
+
+        // Save new tourist
+        tservice.registerTourist(tourist);
+        return ResponseEntity.ok("Registration successful");
     }
+
+
 
     // Login for a tourist - POST
     //http://localhost:8080/tourist/logintourist
@@ -89,44 +112,44 @@ public class TouristController {
 
  // Updates an existing tourist by their ID.- PUT
  // http://localhost:8080/tourist/{id}
- @PutMapping("/{id}")
- public ResponseEntity<Tourist> updateTourist(@PathVariable int id, @RequestBody Tourist updatedTourist) {
-     return tservice.getTouristById(id)
-         .map(existingTourist -> {
-             // Update only the fields that are provided in the request body
-             if (updatedTourist.getFname() != null) {
-                 existingTourist.setFname(updatedTourist.getFname());
-             }
-             if (updatedTourist.getLname() != null) {
-                 existingTourist.setLname(updatedTourist.getLname());
-             }
-             if (updatedTourist.getAddress() != null) {
-                 existingTourist.setAddress(updatedTourist.getAddress());
-             }
-             if (updatedTourist.getDob() != null) {
-                 existingTourist.setDob(updatedTourist.getDob());
-             }
-
-             // 🛑 CRITICAL: Update the nested User details as well
-             User existingUser = existingTourist.getUid();
-             User updatedUser = updatedTourist.getUid();
-             
-             if (updatedUser != null) {
-                 if (updatedUser.getUname() != null) {
-                     existingUser.setUname(updatedUser.getUname());
-                 }
-                 if (updatedUser.getEmail() != null) {
-                     existingUser.setEmail(updatedUser.getEmail());
-                 }
-                 if (updatedUser.getPhone_no() != null) {
-                     existingUser.setPhone_no(updatedUser.getPhone_no());
-                 }
-             }
-
-             return ResponseEntity.ok(tservice.saveOrUpdateTourist(existingTourist));
-         })
-         .orElseGet(() -> ResponseEntity.notFound().build());
- }
+// @PutMapping("/{id}")
+// public ResponseEntity<Tourist> updateTourist(@PathVariable int id, @RequestBody Tourist updatedTourist) {
+//     return tservice.getTouristById(id)
+//         .map(existingTourist -> {
+//             // Update only the fields that are provided in the request body
+//             if (updatedTourist.getFname() != null) {
+//                 existingTourist.setFname(updatedTourist.getFname());
+//             }
+//             if (updatedTourist.getLname() != null) {
+//                 existingTourist.setLname(updatedTourist.getLname());
+//             }
+//             if (updatedTourist.getAddress() != null) {
+//                 existingTourist.setAddress(updatedTourist.getAddress());
+//             }
+//             if (updatedTourist.getDob() != null) {
+//                 existingTourist.setDob(updatedTourist.getDob());
+//             }
+//
+//             // 🛑 CRITICAL: Update the nested User details as well
+//             User existingUser = existingTourist.getUid();
+//             User updatedUser = updatedTourist.getUid();
+//             
+//             if (updatedUser != null) {
+//                 if (updatedUser.getUname() != null) {
+//                     existingUser.setUname(updatedUser.getUname());
+//                 }
+//                 if (updatedUser.getEmail() != null) {
+//                     existingUser.setEmail(updatedUser.getEmail());
+//                 }
+//                 if (updatedUser.getPhone_no() != null) {
+//                     existingUser.setPhone_no(updatedUser.getPhone_no());
+//                 }
+//             }
+//
+//             return ResponseEntity.ok(tservice.saveOrUpdateTourist(existingTourist));
+//         })
+//         .orElseGet(() -> ResponseEntity.notFound().build());
+// }
     
     // Deletes a tourist by their ID.- DELETE
     // http://localhost:8080/tourist/{id}

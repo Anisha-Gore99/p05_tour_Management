@@ -14,6 +14,6 @@ import com.p05tourmgt.userservice.entities.User;
 @Repository
 public interface TourAgencyRepository extends JpaRepository<TourAgency, Integer> {
 	// Finds a TourAgency by the associated User object.
-	TourAgency findByUid(User uid);
+	TourAgency findByUser(User user);
 
 }

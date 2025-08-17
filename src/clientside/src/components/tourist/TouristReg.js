@@ -1,93 +1,71 @@
-import React, { useState, useReducer } from 'react';
-import PropTypes from 'prop-types';
-import '../../styles/TouristReg.css'; 
+import React, { useState } from "react";
+import axios from "axios";
 
-
-export default function TouristReg({ onSubmit }) 
-{
-    const init={
-  uname: "",
-  password: "",
-  dob: '',
-  address: '',
-  fname: '',
-  lname: '',
-  }
-
-   const reducer=(state,action)=>{
-    switch(action.type){
-        case 'update':return {...state, [action.field]: action.value};
-        case 'reset': return init;
+export default function TouristReg() {
+  const [tourist, setTourist] = useState({
+    fname: "",
+    lname: "",
+    address: "",
+    dob: "",
+    uid: {
+      uname: "",
+      email: "",
+      password: "",
+      phone_no: ""
     }
-  }
+  });
 
-  const [info, dispatch] = useReducer(reducer,init);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const sendData=()=>{
-   
+    if (["uname", "email", "password", "phone_no"].includes(name)) {
+      setTourist((prev) => ({
+        ...prev,
+        uid: {
+          ...prev.uid,
+          [name]: value
+        }
+      }));
+    } else {
+      setTourist((prev) => ({
+        ...prev,
+        [name]: value
+      }));
     }
-  
-     return(
-            <div>
-                <h1>Tourist Registration</h1>
-                <form onSubmit={sendData} onReset={() => dispatch({ type: 'reset' })} noValidate>
-              
-          <input type="text"
-                 name="uid"
-                 placeholder="User ID"
-                 value={info.uid}
-                 onChange={e => dispatch({ type:'update', field:'uid', value:e.target.value })}
-                 required />
-          <br/>
-    
-          <input type="password"
-                 name="password"
-                 placeholder="Password"
-                 value={info.pwd}
-                 onChange={e => dispatch({ type:'update', field:'password', value:e.target.value })}
-                 required />
-          <br/>
-    
-          <input type="date"
-                 name="dob"
-                 placeholder="Tourist Date of Birth"
-                 value={info.dob}
-                 onChange={e => dispatch({ type:'update', field:'dob', value:e.target.value })}
-                 required />
-          <br/>
+  };
 
-          <textarea
-                 name="address"
-                 placeholder="Address"
-                 value={info.address}
-                 onChange={e => dispatch({ type:'update', field:'address', value:e.target.value })}
-                 required />
-          <br/>
-    
-          <input type="text"
-                 name="fname"
-                 placeholder="First Name"
-                 value={info.fname}
-                 onChange={e => dispatch({ type:'update', field:'fname', value:e.target.value })}
-                 required />
-          <br/>
-
-          <input type="text"
-                 name="lname"
-                 placeholder="Last Name"
-                 value={info.fname}
-                 onChange={e => dispatch({ type:'update', field:'lname', value:e.target.value })}
-                 required />
-          <br/>
-    
-          <div className="button-group">
-            <button type="submit">Register Tourist</button>
-            <button type="reset">Clear</button>
-          </div>
-        </form>
-            </div>
-        ) 
+const sendData = async () => {
+    try {
+        const result = await axios.post("http://localhost:8081/tourist/registertourist", tourist);
+        alert("Registration successful!");
+        // optionally clear form
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            alert(error.response.data); // Shows "Email already exists"
+        } else {
+            alert("Something went wrong. Please try again.");
+        }
+        console.error("Error registering tourist:", error);
     }
-     TouristReg.propTypes = {
-      onSubmit: PropTypes.func.isRequired,
-    };
+};
+
+
+  return (
+    <div>
+      <h2>Tourist Registration</h2>
+
+      <input type="text" name="fname" placeholder="First Name" onChange={handleChange} />
+      <input type="text" name="lname" placeholder="Last Name" onChange={handleChange} />
+      <input type="text" name="address" placeholder="Address" onChange={handleChange} />
+      <input type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} />
+
+      <input type="text" name="uname" placeholder="Username" onChange={handleChange} />
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} />
+      <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+      <input type="text" name="phone_no" placeholder="Phone No" onChange={handleChange} />
+
+      <button onClick={sendData}>Register</button>
+    </div>
+  );
+}
+
