@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.p05tourmgmt.tourservice.entities.TourPackage;
 
 public interface TourPackageRepository extends JpaRepository<TourPackage, Integer> {
+    java.util.List<com.p05tourmgmt.tourservice.entities.TourPackage> findAllByTourAgencyId(int tourAgencyId);
+
 
 }

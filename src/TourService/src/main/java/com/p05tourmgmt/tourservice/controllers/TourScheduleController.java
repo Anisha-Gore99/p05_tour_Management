@@ -1,46 +1,65 @@
 package com.p05tourmgmt.tourservice.controllers;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.p05tourmgmt.tourservice.entities.TourSchedule;
 import com.p05tourmgmt.tourservice.services.TourScheduleService;
 
 @RestController
 @RequestMapping("/api/schedules")
+
 public class TourScheduleController {
-	 @Autowired
-	    private TourScheduleService tourScheduleService;
 
-	    @PostMapping
-	    public TourSchedule createSchedule(@RequestBody TourSchedule schedule) {
-	        return tourScheduleService.createSchedule(schedule);
-	    }
+    private final TourScheduleService tourScheduleService;
 
-	    @GetMapping
-	    public List<TourSchedule> getAllSchedules() {
-	        return tourScheduleService.getAllSchedules();
-	    }
+    public TourScheduleController(TourScheduleService tourScheduleService) {
+        this.tourScheduleService = tourScheduleService;
+    }
 
-	    @GetMapping("/{id}")
-	    public TourSchedule getScheduleById(@PathVariable int id) {
-	        return tourScheduleService.getScheduleById(id);
-	    }
+    @PostMapping
+    public ResponseEntity<TourSchedule> createSchedule(@RequestBody TourSchedule schedule) {
+        TourSchedule saved = tourScheduleService.createSchedule(schedule);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
 
-	    @DeleteMapping("/{id}")
-	    public void deleteSchedule(@PathVariable int id) {
-	        tourScheduleService.deleteSchedule(id);
-	    }
-	    
-	   
+    @GetMapping
+    public ResponseEntity<List<TourSchedule>> getAllSchedules() {
+        return ResponseEntity.ok(tourScheduleService.getAllSchedules());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getScheduleById(@PathVariable("id") int id) {
+        TourSchedule ts = tourScheduleService.getScheduleById(id);
+        if (ts == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Schedule not found"));
+        }
+        return ResponseEntity.ok(ts);
+    }
+
+    @GetMapping("/by-package/{packageId}")
+    public List<TourSchedule> getSchedulesByPackage(@PathVariable("packageId") int packageId) {
+        return tourScheduleService.getSchedulesByPackage(packageId);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSchedule(@PathVariable("id") int id, @RequestBody TourSchedule updated) {
+        TourSchedule saved = tourScheduleService.updateSchedule(id, updated);
+        if (saved == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Schedule not found"));
+        }
+        return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable("id") int id) {
+        tourScheduleService.deleteSchedule(id);
+        return ResponseEntity.noContent().build();
+    }
 }
