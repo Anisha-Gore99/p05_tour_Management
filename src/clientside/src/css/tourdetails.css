@@ -1,0 +1,164 @@
+/* Container for the entire tour details page */
+.tour-details-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+}
+
+/* Styles for the main card displaying tour details */
+.tour-details-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1000px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styles for the tour image at the top of the card */
+.tour-image {
+    width: 100%;
+    height: 400px; /* Increased height for a more immersive hero image feel */
+    object-fit: cover;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+/* Section for textual information */
+.tour-info {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Tour name heading */
+.tour-info h2 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+/* General paragraph styles */
+.tour-info p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Specific styling for destination and description */
+.tour-destination {
+    font-style: italic;
+    color: #777;
+}
+
+.tour-description {
+    border-left: 4px solid #007bff;
+    padding-left: 15px;
+    background-color: #f9f9f9;
+}
+
+/* Heading for the schedules section */
+.tour-info h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-top: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+/* List of tour schedules */
+.schedule-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.schedule-item {
+    background-color: #f2f8ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #d4e3f4;
+    transition: transform 0.2s ease-in-out;
+}
+
+.schedule-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-item p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.schedule-cost {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1rem;
+}
+
+/* Book Now button styling */
+.book-now-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+.book-now-button:hover {
+    background-color: #218838;
+}
+
+/* Message styling for loading, errors, or no tour found */
+.loading-message, .error-message, .no-tour-found {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 50px;
+    color: #777;
+}
+
+.error-message {
+    color: #dc3545;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .tour-details-card {
+        flex-direction: column;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .tour-image {
+        height: 250px;
+    }
+
+    .tour-info {
+        padding: 20px;
+    }
+
+    .tour-info h2 {
+        font-size: 2rem;
+    }
+
+    .tour-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .book-now-button {
+        width: 100%;
+    }
+}

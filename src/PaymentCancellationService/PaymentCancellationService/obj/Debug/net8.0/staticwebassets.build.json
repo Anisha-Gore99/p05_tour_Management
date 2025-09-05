@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "p9lksx+pmXm/uOEYrZXL+xBX8v0b4xNv2A5majKHYDc=",
+  "Source": "PaymentCancellationService",
+  "BasePath": "_content/PaymentCancellationService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

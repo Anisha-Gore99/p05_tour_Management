@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\obj",
+    "\\PaymentCancellationService",
+    "\\PaymentCancellationService\\bin",
+    "\\PaymentCancellationService\\Data",
+    "\\PaymentCancellationService\\Migrations",
+    "\\PaymentCancellationService\\Models",
+    "\\PaymentCancellationService\\obj",
+    "\\PaymentCancellationService\\obj\\Debug",
+    "\\PaymentCancellationService\\Properties"
+  ],
+  "SelectedNode": "\\PaymentCancellationService\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}
