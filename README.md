@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project, "P05 Tour Management System," aims to develop a comprehensive platform for managing tour packages, bookings, and customer information. It consists of a React-based frontend for user interaction and a Spring Boot REST API backend to handle business logic and data persistence.
+Tour Management System is a web-based platform built using microservices architecture to connect admins, tour agencies, and tourists. Tourists can register, login, explore and book tour packages, tour agencies can create and manage tours, and admins handle verification and quality control. Each core function—user management, tour profile, bookings, admin control (Spring Boot) and payments(.NET) is handled by dedicated microservices, making the system organized, flexible, and easy to maintain. It ensures a smooth, secure, and engaging experience for all users involved in the travel journey.
 
 * **What:** A web-based application for streamlined tour package and booking management.
 * **Why:** To provide an efficient and user-friendly system for tour operators and customers, enhancing the management of tours from creation to booking.
@@ -125,7 +125,7 @@ This section guides you through setting up and running the React client-side app
     ```
 2.  **Install Dependencies:**
     ```bash
-    npm install
+    npm install react-router-dom react-redux @reduxjs/toolkit axios cors
     ```
 3.  **Run the Application:**
     ```bash
@@ -172,14 +172,3 @@ This project adheres to the SCM guidelines provided. Please ensure you follow th
     * Every development branch, commit, and merge **must** have a corresponding Issue entry in the project's issue tracker (on GitHub/GitLab).
     * Issues should have appropriate labels and be assigned to relevant team members.
 
-## License
-
-[Link to your LICENSE.md here, e.g., MIT License]
-
-## Changelog
-
-[Link to your CHANGELOG.md here]
-
-## Authors
-
-[Link to your AUTHORS.md here]
